@@ -1,38 +1,80 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/**********/
+/* Navbar */
+/**********/
+.navbar {
+  position: fixed;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  outline: solid red;
+  height: 60px;
+  width: 100vw;
+  top: 0;
+}
+
+.nav-search-container {
+  position: fixed;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  left: 0;
+  margin-left: 20px;
+}
+
+.nav-search {
+  background-color: rgb(39, 39, 39);
+  border: solid 2px inset rgb(80, 80, 80);
+  border-radius: 10px;
+  height: 30px;
+  width: 200px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-search-button {
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-title {
+  position: fixed;
+  color: black;
+  text-shadow: 2px 2px white;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/***********/
+/* Watched */
+/***********/
+.watched {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: solid red;
+  height: calc(50vh - 30px);
+  width: 100vw;
+  margin-top: 60px;
+}
+
+/*************/
+/* Unwatched */
+/*************/
+.unwatched {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: solid red;
+  height: calc(50vh - 30px);
+  width: 100vw;
 }
