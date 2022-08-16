@@ -1,10 +1,17 @@
 * {
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+  color: white;
+  /* font-family: 'Prompt', sans-serif; */
 }
 
 body {
   background-color: black;
+}
+
+section {
+  padding: 20px;
 }
 
 /**********/
@@ -16,7 +23,6 @@ body {
   align-items: center;
   justify-content: space-between;
   background-color: transparent;
-  outline: solid red;
   height: 60px;
   width: 100vw;
   top: 0;
@@ -38,20 +44,56 @@ body {
   height: 30px;
   width: 200px;
   color: white;
+  padding-left: 10px;
 }
 
 .nav-search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 30px;
   width: 30px;
   border-radius: 15px;
+  padding: 5px;
+  background-color: rgb(39, 39, 39);
+  margin-left: 10px;
+}
+
+.nav-search-button > img {
+  height: 100%;
+  width: auto;
 }
 
 .nav-title {
   position: fixed;
-  color: black;
+  color: gray;
   text-shadow: 2px 2px white;
   left: 50%;
   transform: translateX(-50%);
+}
+
+/*********/
+/* Modal */
+/*********/
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(100, 129, 100, 0.8);
 }
 
 /***********/
@@ -61,10 +103,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  outline: solid red;
   height: calc(50vh - 30px);
   width: 100vw;
   margin-top: 60px;
+}
+
+.watched-container {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(100, 100, 100, 0.5);
+  border-radius: 20px;
+
 }
 
 /*************/
@@ -74,7 +123,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  outline: solid red;
   height: calc(50vh - 30px);
   width: 100vw;
 }
+
+.unwatched-container {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(100, 100, 100, 0.5);;
+  border-radius: 20px;
+}
+
+/********/
+/* Tile */
+/********/
