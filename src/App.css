@@ -7,6 +7,7 @@
 }
 
 body {
+  display: flex;
   background-color: black;
 }
 
@@ -26,6 +27,7 @@ section {
   height: 60px;
   width: 100vw;
   top: 0;
+  z-index: 10;
 }
 
 .nav-search-container {
@@ -38,6 +40,7 @@ section {
 }
 
 .nav-search {
+  position: relative;
   background-color: rgb(39, 39, 39);
   border: solid 2px inset rgb(80, 80, 80);
   border-radius: 10px;
@@ -75,16 +78,6 @@ section {
 /*********/
 /* Modal */
 /*********/
-.modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: flex-start;
-  margin: 20px;
-  height: 100%;
-  width: 100%;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -93,7 +86,43 @@ section {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(100, 129, 100, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.modal-list {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin: 20px;
+  height: 80vh;
+  width: 80vw;
+  background-color: gray;
+  border-radius: 20px;
+  padding: 20px 30px 20px 30px;
+  overflow-wrap: break-word;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 6;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 5px;
+  border: 10px;
+  width: 5px;
 }
 
 /***********/
@@ -103,7 +132,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(50vh - 30px);
+  height: 430px;
   width: 100vw;
   margin-top: 60px;
 }
@@ -111,7 +140,7 @@ section {
 .watched-container {
   height: 100%;
   width: 100%;
-  background-color: rgb(100, 100, 100, 0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 20px;
 
 }
@@ -123,7 +152,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(50vh - 30px);
+  height: 430px;
   width: 100vw;
 }
 
@@ -137,3 +166,46 @@ section {
 /********/
 /* Tile */
 /********/
+
+/***************/
+/* SearchTiles */
+/***************/
+.search-tiles {
+  display: flex;
+  height: 500px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.search-tiles-poster-container {
+  height: 100%;
+  width: 150px;
+}
+
+.search-tiles-poster {
+  height: 225px;
+  object-fit: contain;
+}
+
+.search-tiles-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin-left: 40px;
+  height: 200px;
+  width: 1000px;
+}
+
+.search-tiles-header {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  font-size: 8px;
+}
+
+.search-tiles-date {
+  margin-left: 20px;
+  color: rgb(180, 180, 180);
+}

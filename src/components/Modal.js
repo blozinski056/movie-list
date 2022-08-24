@@ -1,32 +1,83 @@
 import React from "react"
+import SearchTiles from "./SearchTiles.js"
 
 export default function Modal(props) {
+  const BASEURL = "https://api.themoviedb.org/3/"
+  const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793"
+  const [movieData, setMovieData] = React.useState([])
+  const [configURL, setConfigURL] = React.useState("")
 
-  // console.log(props.searchData())
-  const results = props.searchData().map((data) => {
-    return (
-      <div className="modal-data">
-        <img src={props.getImage(data.poster_path)} alt={data.title} />
-        <div className="modal-data-info">
-          <h1>{data.title} + {" ("} + {data.release_date} + {")"}</h1>
-          <p>{data.overview}</p>
-        </div>
-        <div className="modal-data-buttons">
-          <button >+ Add to Watched List</button>
-          <button>+ Add to Unwatched List</button>
-        </div>
-      </div>
+  console.log(movieData)
+  
+  // Returns base link of image configuration
+  function getImage() {
+    const url = "".concat(BASEURL, "configuration", APIKEY);
+
+    return(
+      fetch(url)
+      .then(result => result.json())
+      .then((data) => {
+        const config = data.images.secure_base_url
+        const sizes = data.images.poster_sizes[1]
+        const posterLink = "".concat(config, sizes)
+        setConfigURL(posterLink)
+      })
+      .catch((error) => console.log(error))
     )
-  })
+  }
 
+  // Generates links for each poster first, then returns tile for each movie
+  function makeTiles() {
+    getImage()
+
+    return (
+      movieData.map((movie) => {    
+        return (
+          <SearchTiles 
+            key={movie.key}
+            poster={"".concat(configURL, movie.poster)}
+            title={movie.title}
+            date={movie.date}
+            overview={movie.overview}
+          />
+        )
+      })
+    )
+  }
+
+  React.useEffect(() => {
+    // Retrieves all movie data on Modal load
+    if(props.search.length > 0) {
+      const url = "".concat(BASEURL, "search/movie", APIKEY, "&query=", props.search);
+  
+      fetch(url)
+      .then((result) => result.json())
+      // .then((data) => setMovieData(data.results))
+      .then((data) => {
+        const searchItems = data.results.map((item) => {
+          return (
+            {
+              key: item.id,
+              poster: item.poster_path,
+              title: item.title,
+              date: item.release_date,
+              overview: item.overview
+            }
+          )
+        })
+
+        setMovieData(searchItems)
+      })
+    }
+  }, [props.search])
+  
   return (
-    <div>
-      <div className="modal-overlay"></div>
+    <div className="modal">
+      <div className="modal-overlay" onClick={() => props.setModal(false)}></div>
 
-      <div className="modal">
-        {/* {results} */}
+      <div className="modal-list">
+        {makeTiles()}
       </div>
     </div>
-    
   )
 }

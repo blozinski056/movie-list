@@ -2,14 +2,13 @@ import React from "react"
 
 export default function Navbar(props) {
 
-  // Sends searched keyword back to App.js to use in API search
+  // Sends searched keyword back to App.js to use in API search and opens modal
   function searchKeyword(event) {
     event.preventDefault();
 
     const searchWord = document.querySelector(".nav-search")
-    props.search(searchWord.value)
-    props.modal(true)
-    console.log(searchWord.value)
+    props.setSearch(searchWord.value)
+    props.setModal(true)
   }
 
   return (
