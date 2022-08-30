@@ -39,6 +39,8 @@ export default function Modal(props) {
             title={movie.title}
             date={movie.date}
             overview={movie.overview}
+            addToWatched={props.addToWatched}
+            addToUnwatched={props.addToUnwatched}
           />
         )
       })
@@ -52,7 +54,6 @@ export default function Modal(props) {
   
       fetch(url)
       .then((result) => result.json())
-      // .then((data) => setMovieData(data.results))
       .then((data) => {
         const searchItems = data.results.map((item) => {
           return (
@@ -73,11 +74,19 @@ export default function Modal(props) {
   
   return (
     <div className="modal">
-      <div className="modal-overlay" onClick={() => props.setModal(false)}></div>
+      <div className="modal-overlay"></div>
 
       <div className="modal-list">
         {makeTiles()}
+        <button 
+          className="modal-exit-button"
+          onClick={() => props.setModal(false)}
+        >
+          +
+        </button>
       </div>
+
+      <div className="modal-drop-down"></div>
     </div>
   )
 }

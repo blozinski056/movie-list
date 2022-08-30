@@ -18,11 +18,11 @@ export default function App() {
   const w = watched.map((item) => {
     return (
       <Tiles 
-        key={item.id}
+        key={item.key}
         title={item.title}
         poster={item.poster}
-        year={item.year}
-        description={item.description}
+        date={item.date}
+        overview={item.overview}
       />
     )
   })
@@ -30,14 +30,22 @@ export default function App() {
   const uw = unwatched.map((item) => {
     return (
       <Tiles 
-        key={item.id}
+        key={item.key}
         title={item.title}
         poster={item.poster}
-        year={item.year}
+        date={item.date}
         overview={item.overview}
       />
     )
   })
+
+  function addToWatched(movie) {
+    setWatched(prevWatched => [movie, ...prevWatched])
+  }
+
+  function addToUnwatched(movie) {
+    setUnwatched(prevUnwatched => [movie, ...prevUnwatched])
+  }
 
   return (
     <div>
@@ -52,6 +60,8 @@ export default function App() {
         <Modal 
           setModal={setModal}
           search={search}
+          addToWatched={addToWatched}
+          addToUnwatched={addToUnwatched}
         />
       }
 

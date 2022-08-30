@@ -3,15 +3,11 @@ import React from "react"
 export default function Tiles(props) {
 
   return (
-    <div className="tile">
+    <div className="tiles">
       <div>
-        {props.poster}
+        <img className="tiles-poster" src={props.poster} />
       </div>
-      <div>
-        <h1>{props.title}</h1>
-        <h5>{props.year}</h5>
-      </div>
-      {/* contain description on back of card or on hover */}
+      <h1 className="tiles-title">{props.title}</h1>
     </div>
   )
 }

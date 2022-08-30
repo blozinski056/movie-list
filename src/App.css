@@ -86,8 +86,7 @@ section {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal-list {
@@ -98,14 +97,14 @@ section {
   align-items: flex-start;
   margin: 20px;
   height: 80vh;
-  width: 80vw;
+  width: 1400px;
   background-color: gray;
   border-radius: 20px;
   padding: 20px 30px 20px 30px;
   overflow-wrap: break-word;
   overflow-y: scroll;
   overflow-x: hidden;
-  z-index: 6;
+  z-index: 5;
 }
 
 ::-webkit-scrollbar {
@@ -125,6 +124,37 @@ section {
   width: 5px;
 }
 
+.modal-exit-button {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+  color: white;
+  background-color: gray;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 30px;
+  border: none;
+  padding-bottom: 6px;
+  padding-left: 7px;
+  left: 1440px;
+  top: 80px;
+}
+
+.modal-drop-down {
+  position: fixed;
+  z-index: 4;
+  background-color: gray;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  transform: rotate(45deg);
+  left: 80px;
+}
+
 /***********/
 /* Watched */
 /***********/
@@ -138,11 +168,15 @@ section {
 }
 
 .watched-container {
+  display: flex;
+  align-items: center;
   height: 100%;
   width: 100%;
   background-color: rgba(100, 100, 100, 0.5);
   border-radius: 20px;
-
+  padding: 30px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 /*************/
@@ -157,15 +191,46 @@ section {
 }
 
 .unwatched-container {
+  display: flex;
+  align-items: center;
   height: 100%;
   width: 100%;
   background-color: rgb(100, 100, 100, 0.5);;
   border-radius: 20px;
+  padding: 30px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 5px;
+  border: 10px;
+  width: 5px;
 }
 
 /********/
 /* Tile */
 /********/
+.tiles {
+  margin: 10px;
+  height: 100%;
+  width: 200px;
+}
+
+.tiles-title {
+  font-size: 15px;
+}
 
 /***************/
 /* SearchTiles */
@@ -193,7 +258,8 @@ section {
   flex-direction: column;
   justify-content: left;
   align-items: flex-start;
-  margin-left: 40px;
+  margin-left: 30px;
+  margin-right: 30px;
   height: 200px;
   width: 1000px;
 }
@@ -208,4 +274,33 @@ section {
 .search-tiles-date {
   margin-left: 20px;
   color: rgb(180, 180, 180);
+}
+
+.search-tiles-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px;
+}
+
+.search-tiles-buttons {
+  width: 200px;
+  height: 30px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.search-tiles-buttons.watched {
+  background-color: green;
+}
+
+.search-tiles-buttons.unwatched {
+  background-color: red;
+}
+
+.search-tiles-watched,
+.search-tiles-unwatched {
+  width: 200px;
+  font-size: 15px;
 }
