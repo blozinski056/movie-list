@@ -1,20 +1,23 @@
 import React from "react"
 
 export default function SearchTiles(props) {
-  const [added, setAdded] = React.useState(false)
-  const [watched, setWatched] = React.useState(true)
+  const [added, setAdded] = React.useState(
+    props.inWatchedList(props.id) || props.inUnwatchedList(props.id)
+  )
+  const [watched, setWatched] = React.useState(props.inWatchedList(props.id))
 
   function addToWatchedList() {
     props.addToWatched(
       {
-        key: props.key,
+        key: props.id,
+        id: props.id,
         poster: props.poster,
         title: props.title,
         date: props.date,
         overview: props.overview
       }
     )
-    
+
     setAdded(true)
     setWatched(true)
   }
@@ -22,7 +25,8 @@ export default function SearchTiles(props) {
   function addToUnwatchedList() {
     props.addToUnwatched(
       {
-        key: props.key,
+        key: props.id,
+        id: props.id,
         poster: props.poster,
         title: props.title,
         date: props.date,
@@ -56,16 +60,9 @@ export default function SearchTiles(props) {
 
       {added
         ?
-          (watched
-            ?
-              <div>
-                <h1 className="search-tiles-watched">✔️ Added to Watched List</h1>
-              </div>
-            :
-              <div>
-                <h1 className="search-tiles-unwatched">✔️ Added to Unwatched List</h1>
-              </div>
-          )
+          <div>
+            <h1 className="search-tiles-watched">✔️ Added to {watched ? "Watched" : "Unwatched"} List</h1>
+          </div>
         :
           <div className="search-tiles-buttons-container">
             <button
