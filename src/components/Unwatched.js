@@ -5,6 +5,7 @@ export default function Unwatched(props) {
   return (
     <section className="unwatched">
       <div className="unwatched-container">
+      <h5 className="unwatched-title">UNWATCHED</h5>
         {props.tiles}
       </div>
     </section>

@@ -25,6 +25,9 @@ export default function Navbar(props) {
       </form>
       
       <h1 className="nav-title">MovieTracker</h1>
+
+
+      <img className="nav-menu-icon" src="./images/menu-icon.png" />
     </div>
   )
 }

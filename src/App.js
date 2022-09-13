@@ -91,12 +91,44 @@ export default function App() {
     )
   }
 
+  // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
     setWatched(prevWatched => [movie, ...prevWatched])
   }
 
+  // Add movie object to unwatched list (used in SearchTiles.js)
   function addToUnwatched(movie) {
     setUnwatched(prevUnwatched => [movie, ...prevUnwatched])
+  }
+
+  function removeFromWatched(id) {
+    let index = 0;
+    for(let i = 0; i < watched.length; i++) {
+      if(watched[i].id === id) {
+        index = i;
+        break;
+      }
+    }
+
+    setWatched(prevWatched => [
+      ...prevWatched.slice(0, index), 
+      ...prevWatched.slice(index + 1, watched.length)
+    ])
+  }
+
+  function removeFromUnwatched(id) {
+    let index = 0;
+    for(let i = 0; i < unwatched.length; i++) {
+      if(unwatched[i].id === id) {
+        index = i;
+        break;
+      }
+    }
+
+    setUnwatched(prevUnwatched => [
+      ...prevUnwatched.slice(0, index), 
+      ...prevUnwatched.slice(index + 1, unwatched.length)
+    ])
   }
 
   function inWatchedList(id) {
@@ -128,6 +160,10 @@ export default function App() {
         overview={item.overview}
         inWatchedList={inWatchedList}
         inUnwatchedList={inUnwatchedList}
+        addToWatched={addToWatched}
+        addToUnwatched={addToUnwatched}
+        removeFromWatched={removeFromWatched}
+        removeFromUnwatched={removeFromUnwatched}
       />
     )
   })
@@ -143,6 +179,10 @@ export default function App() {
         overview={item.overview}
         inWatchedList={inWatchedList}
         inUnwatchedList={inUnwatchedList}
+        addToWatched={addToWatched}
+        addToUnwatched={addToUnwatched}
+        removeFromWatched={removeFromWatched}
+        removeFromUnwatched={removeFromUnwatched}
       />
     )
   })

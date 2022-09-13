@@ -24,6 +24,10 @@ export default function Tiles(props) {
           overview={props.overview}
           inWatchedList={props.inWatchedList}
           inUnwatchedList={props.inUnwatchedList}
+          addToWatched={props.addToWatched}
+          addToUnwatched={props.addToUnwatched}
+          removeFromWatched={props.removeFromWatched}
+          removeFromUnwatched={props.removeFromUnwatched}
           setDetailModal={setDetailModal}
         />
       }

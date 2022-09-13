@@ -7,11 +7,31 @@ export default function DetailModal(props) {
   }
 
   function move() {
-    
+    removeUnwatched()
+    props.addToWatched(
+      {
+        key: props.id,
+        id: props.id,
+        poster: props.poster,
+        title: props.title,
+        date: props.date,
+        overview: props.overview
+      }
+    )
+
+    close()
   }
 
-  function remove() {
+  function removeWatched() {
+    props.removeFromWatched(props.id)
 
+    close()
+  }
+
+  function removeUnwatched() {
+    props.removeFromUnwatched(props.id)
+
+    close()
   }
 
   return (
@@ -30,17 +50,17 @@ export default function DetailModal(props) {
 
         {props.inUnwatchedList(props.id)
           ?
-            <div>
-              <button onClick={move}>
+            <div className="detail-modal-buttons">
+              <button className="detail-modal-move" onClick={move}>
                 + Move to Watched List
               </button>
-              <button onClick={remove}>
+              <button className="detail-modal-remove" onClick={removeUnwatched}>
                 - Remove from Unwatched List
               </button>
             </div>
           :
-            <div>
-              <button onClick={remove}>
+            <div className="detail-modal-buttons">
+              <button className="detail-modal-remove" onClick={removeWatched}>
                 - Remove from Watched List
               </button>
             </div>
