@@ -20,6 +20,10 @@ section {
   padding: 20px;
 }
 
+button {
+  border-radius: 5px;
+}
+
 ::-webkit-scrollbar {
   height: 10px;
 }
@@ -82,6 +86,7 @@ section {
   padding: 5px;
   background-color: rgb(39, 39, 39);
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .nav-search-button > img {
@@ -105,12 +110,12 @@ section {
   cursor: pointer;
 }
 
-/*********/
-/* Modal */
-/*********/
+/***************/
+/* SearchModal */
+/***************/
 .modal-overlay {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -128,14 +133,15 @@ section {
   align-items: flex-start;
   margin: 20px;
   height: 80vh;
-  width: auto;
+  width: 980px;
   background-color: gray;
   border-radius: 20px;
   padding: 20px 30px 20px 30px;
-  overflow-wrap: break-word;
   overflow-y: scroll;
   overflow-x: hidden;
   left: 30px;
+  animation: open 0.4s ease forwards;
+  transform-origin: top;
   z-index: 5;
 }
 
@@ -148,26 +154,7 @@ section {
   border-radius: 5px;
   transform: rotate(45deg);
   left: 80px;
-}
-
-.modal-exit-button {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(45deg);
-  color: white;
-  background-color: gray;
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 40px;
-  border: none;
-  padding-bottom: 6px;
-  padding-left: 7px;
-  left: 995px;
-  top: 85px;
+  top: 65px;
 }
 
 ::-webkit-scrollbar {
@@ -242,6 +229,16 @@ section {
   cursor: pointer;
 }
 
+.search-tiles-buttons:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+
+.search-tiles-buttons:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
+}
+
 .search-tiles-buttons.watched {
   background-color: green;
 }
@@ -270,23 +267,13 @@ section {
   justify-content: flex-start;
   height: 100%;
   width: 100%;
-  background-color: rgba(100, 100, 100, 0.5);
+  background-color: rgb(50, 50, 50);
   border-radius: 20px;
   padding: 30px 30px 20px 30px;
   overflow-x: scroll;
   overflow-y: hidden;
   gap: 20px;
 }
-
-/* .watched-title {
-  position: absolute;
-  left: 40px;
-  top: 3px;
-  width: 10px;
-  height: auto;
-  font-size: 20px;
-  color: rgb(131, 131, 131);
-} */
 
 .watched-title {
   position: absolute;
@@ -295,7 +282,7 @@ section {
   margin-top: 50px;
   left: 10px;
   font-size: 20px;
-  color: rgb(131, 131, 131);
+  color: rgb(180, 180, 180);
 }
 
 /*************/
@@ -308,23 +295,14 @@ section {
   justify-content: flex-start;
   height: 100%;
   width: 100%;
-  background-color: rgb(100, 100, 100, 0.5);;
+  background-color: rgb(50, 50, 50);
   border-radius: 20px;
   padding: 30px 30px 20px 30px;
   overflow-x: scroll;
   overflow-y: hidden;
   gap: 20px;
+  
 }
-
-/* .unwatched-title {
-  position: absolute;
-  left: 40px;
-  top: 3px;
-  width: 10px;
-  height: auto;
-  font-size: 20px;
-  color: rgb(131, 131, 131);
-} */
 
 .unwatched-title {
   position: absolute;
@@ -333,7 +311,7 @@ section {
   margin-top: 100px;
   left: 10px;
   font-size: 20px;
-  color: rgb(131, 131, 131);
+  color: rgb(180, 180, 180);
 }
 
 /********/
@@ -357,6 +335,11 @@ section {
 .tiles-poster:hover {
   transform: translate(-2px, -2px);
   box-shadow: 7px 7px 15px black;
+}
+
+.tiles-poster:active {
+  transform: translate(1px, 1px);
+  box-shadow: 5px 5px 10px black;
 }
 
 /***************/
@@ -407,8 +390,100 @@ section {
   cursor: pointer;
 }
 
+.detail-modal-move:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+
+.detail-modal-move:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
+}
+
 .detail-modal-remove {
   background-color: red;
   margin: 5px;
   cursor: pointer;
+}
+
+.detail-modal-remove:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+
+.detail-modal-remove:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
+}
+
+/*************/
+/* MenuModal */
+/*************/
+.menu-modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  right: 0;
+  top: 0;
+  margin-top: 80px;
+  margin-right: 40px;
+  background-color: gray;
+  width: 180px;
+  height: 150px;
+  border-radius: 10px;
+  animation: open 0.4s ease forwards;
+  transform-origin: top;
+  box-shadow: 3px 3px 10px black;
+  padding: 15px;
+  z-index: 5;
+}
+
+.menu-modal > h1 {
+  font-size: 20px;
+}
+
+.menu-modal-drop-down {
+  position: fixed;
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
+  transform: rotate(45deg);
+  background-color: gray;
+  right: 10px;
+  top: -10px;
+}
+
+.menu-modal-login {
+  align-self: center;
+  margin-top: 15px;
+  width: 60px;
+  height: 33px;
+  align-items: center;
+  padding: 5px;
+  background-color: rgb(65, 65, 65);
+  cursor: pointer;
+}
+
+.menu-modal-login:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+
+.menu-modal-login:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
+}
+
+@keyframes open {
+  0% {
+    transform: scaleY(0%);
+  }
+  80% {
+    transform: scaleY(110%);
+  }
+  100% {
+    transform: scaleY(100%)
+  }
 }

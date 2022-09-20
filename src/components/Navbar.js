@@ -1,6 +1,8 @@
 import React from "react"
+import MenuModal from "./MenuModal.js"
 
 export default function Navbar(props) {
+  const [menuOn, setMenuOn] = React.useState(false)
 
   // Sends searched keyword back to App.js to use in API search and opens modal
   function searchKeyword(event) {
@@ -27,7 +29,19 @@ export default function Navbar(props) {
       <h1 className="nav-title">MovieTracker</h1>
 
 
-      <img className="nav-menu-icon" src="./images/menu-icon.png" />
+      <img
+        className="nav-menu-icon"
+        src="./images/menu-icon.png"
+        onClick={() => setMenuOn(prevMenuOn => !prevMenuOn)}
+      />
+
+      {menuOn &&
+          <MenuModal 
+            setModal={props.setModal}
+            watchedLength={props.watchedLength}
+            unwatchedLength={props.unwatchedLength}
+          />
+      }
     </div>
   )
 }

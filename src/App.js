@@ -149,6 +149,14 @@ export default function App() {
     return false
   }
 
+  function getWatchedLength() {
+    return watched.length
+  }
+
+  function getUnwatchedLength() {
+    return unwatched.length
+  }
+
   const w = watched.map((item) => {
     return (
       <Tiles 
@@ -193,6 +201,8 @@ export default function App() {
       <Navbar 
         setSearch={setSearch}
         setModal={setModal}
+        watchedLength={getWatchedLength()}
+        unwatchedLength={getUnwatchedLength()}
       />
 
       {/* Searchbar list */}
