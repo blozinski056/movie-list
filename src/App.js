@@ -6,29 +6,91 @@ import Unwatched from "./components/Unwatched.js"
 import Tiles from "./components/Tiles.js"
 import SearchModal from "./components/SearchModal.js"
 import SearchTiles from "./components/SearchTiles.js"
+import DetailModal from "./components/DetailModal.js"
 
 export default function App() {
   // Movie lists
   const [watched, setWatched] = React.useState([])
   const [unwatched, setUnwatched] = React.useState([])
-
   // If modal is visible
   const [modal, setModal] = React.useState(false)
-
   // Search keyword
   const [search, setSearch] = React.useState("")
-
+  const [detailModal, setDetailModal] = React.useState(false)
+  const [details, setDetails] = React.useState({id: "", poster: "", title: "", date: "", overview: ""})
   // Variables for API fetch
   const BASEURL = "https://api.themoviedb.org/3/"
   const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793"
   const [searchData, setSearchData] = React.useState([])
   const [configURL, setConfigURL] = React.useState("")
 
+  const searchList = searchData.map((movie) => {
+    return (
+      <SearchTiles 
+        key={movie.id}
+        id={movie.id}
+        poster={"".concat(configURL, movie.poster)}
+        title={movie.title}
+        date={movie.date}
+        overview={movie.overview}
+        addToWatched={addToWatched}
+        addToUnwatched={addToUnwatched}
+        inWatchedList={inWatchedList}
+        inUnwatchedList={inUnwatchedList}
+        convertDate={convertDate}
+      />
+    )
+  })
+
+  const w = watched.map((item) => {
+    return (
+      <Tiles 
+        key={item.key}
+        id={item.id}
+        title={item.title}
+        poster={item.poster}
+        date={item.date}
+        overview={item.overview}
+        cast={item.cast}
+        setDetailModal={setDetailModal}
+        setDetails={setDetails}
+      />
+    )
+  })
+
+  const uw = unwatched.map((item) => {
+    return (
+      <Tiles 
+        key={item.key}
+        id={item.id}
+        title={item.title}
+        poster={item.poster}
+        date={item.date}
+        overview={item.overview}
+        cast={item.cast}
+        setDetailModal={setDetailModal}
+        setDetails={setDetails}
+      />
+    )
+  })
+
+  React.useEffect(() => {
+    const url = "".concat(BASEURL, "configuration", APIKEY);
+    fetch(url)
+      .then(result => result.json())
+      .then((data) => {
+        const config = data.images.secure_base_url
+        const sizes = data.images.poster_sizes[4]
+        const posterLink = "".concat(config, sizes)
+        setConfigURL(posterLink)
+      })
+      .catch((error) => console.log(error));
+  }, [])
+
   // Updating searched items based on search keyword
   React.useEffect(() => {
     if(search.length > 0) {
       const url = "".concat(BASEURL, "search/movie", APIKEY, "&query=", search);
-  
       fetch(url)
       .then((result) => result.json())
       .then((data) => {
@@ -44,52 +106,10 @@ export default function App() {
             }
           )
         })
-
-        setSearchData(searchItems)
+        setSearchData(searchItems);
       })
     }
   }, [search])
-
-  // Gets image configuration URL
-  function getConfig() {
-    const url = "".concat(BASEURL, "configuration", APIKEY);
-
-    return(
-      fetch(url)
-      .then(result => result.json())
-      .then((data) => {
-        const config = data.images.secure_base_url
-        const sizes = data.images.poster_sizes[4]
-        const posterLink = "".concat(config, sizes)
-        setConfigURL(posterLink)
-      })
-      .catch((error) => console.log(error))
-    )
-  }
-
-  // Makes search tiles based on keyword
-  function makeSearchTiles() {
-    getConfig()
-
-    return (
-      searchData.map((movie) => {
-        return (
-          <SearchTiles 
-            key={movie.id}
-            id={movie.id}
-            poster={"".concat(configURL, movie.poster)}
-            title={movie.title}
-            date={movie.date}
-            overview={movie.overview}
-            addToWatched={addToWatched}
-            addToUnwatched={addToUnwatched}
-            inWatchedList={inWatchedList}
-            inUnwatchedList={inUnwatchedList}
-          />
-        )
-      })
-    )
-  }
 
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
@@ -157,43 +177,52 @@ export default function App() {
     return unwatched.length
   }
 
-  const w = watched.map((item) => {
-    return (
-      <Tiles 
-        key={item.key}
-        id={item.id}
-        title={item.title}
-        poster={item.poster}
-        date={item.date}
-        overview={item.overview}
-        inWatchedList={inWatchedList}
-        inUnwatchedList={inUnwatchedList}
-        addToWatched={addToWatched}
-        addToUnwatched={addToUnwatched}
-        removeFromWatched={removeFromWatched}
-        removeFromUnwatched={removeFromUnwatched}
-      />
-    )
-  })
-
-  const uw = unwatched.map((item) => {
-    return (
-      <Tiles 
-        key={item.key}
-        id={item.id}
-        title={item.title}
-        poster={item.poster}
-        date={item.date}
-        overview={item.overview}
-        inWatchedList={inWatchedList}
-        inUnwatchedList={inUnwatchedList}
-        addToWatched={addToWatched}
-        addToUnwatched={addToUnwatched}
-        removeFromWatched={removeFromWatched}
-        removeFromUnwatched={removeFromUnwatched}
-      />
-    )
-  })
+  function convertDate(date) {
+    let year = date.substring(0, 4);
+    let day = date.substring(8);
+    let month;
+    switch (date.substring(5, 7)) {
+      case "01":
+        month = "Jan";
+        break;
+      case "02":
+        month = "Feb";
+        break;
+      case "03":
+        month = "Mar";
+        break;
+      case "04":
+        month = "Apr";
+        break;
+      case "05":
+        month = "May";
+        break;
+      case "06":
+        month = "Jun";
+        break;
+      case "07":
+        month = "Jul";
+        break;
+      case "08":
+        month = "Aug";
+        break;
+      case "09":
+        month = "Sep";
+        break;
+      case "10":
+        month = "Oct";
+        break;
+      case "11":
+        month = "Nov";
+        break;
+      case "12":
+        month = "Dec";
+        break;
+      default:
+        month = "Jan";
+    }
+    return month + " " + day + ", " + year;
+  }
 
   return (
     <div>
@@ -201,15 +230,16 @@ export default function App() {
       <Navbar 
         setSearch={setSearch}
         setModal={setModal}
-        watchedLength={getWatchedLength()}
-        unwatchedLength={getUnwatchedLength()}
+        setDetailModal={setDetailModal}
+        watchedLength={getWatchedLength}
+        unwatchedLength={getUnwatchedLength}
       />
 
       {/* Searchbar list */}
       {(modal && search.length > 0) &&
         <SearchModal 
           setModal={setModal}
-          makeSearchTiles={makeSearchTiles}
+          searchList={searchList}
         />
       }
 
@@ -222,6 +252,25 @@ export default function App() {
       <Unwatched 
         tiles={uw}
       />
+
+      {detailModal &&
+        <DetailModal 
+          id={details.id}
+          poster={details.poster}
+          title={details.title}
+          date={details.date}
+          overview={details.overview}
+          cast={details.cast}
+          inWatchedList={inWatchedList}
+          inUnwatchedList={inUnwatchedList}
+          addToWatched={addToWatched}
+          addToUnwatched={addToUnwatched}
+          removeFromWatched={removeFromWatched}
+          removeFromUnwatched={removeFromUnwatched}
+          convertDate={convertDate}
+          setDetailModal={setDetailModal}
+        />
+      }
     </div>
   )
 }

@@ -11,6 +11,7 @@ export default function Navbar(props) {
     const searchWord = document.querySelector(".nav-search")
     props.setSearch(searchWord.value)
     props.setModal(true)
+    props.setDetailModal(false)
   }
 
   return (
@@ -33,13 +34,14 @@ export default function Navbar(props) {
         className="nav-menu-icon"
         src="./images/menu-icon.png"
         onClick={() => setMenuOn(prevMenuOn => !prevMenuOn)}
+        alt=""
       />
 
       {menuOn &&
           <MenuModal 
             setModal={props.setModal}
-            watchedLength={props.watchedLength}
-            unwatchedLength={props.unwatchedLength}
+            watchedLength={props.watchedLength()}
+            unwatchedLength={props.unwatchedLength()}
           />
       }
     </div>
