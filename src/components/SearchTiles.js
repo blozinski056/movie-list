@@ -15,7 +15,6 @@ export default function SearchTiles(props) {
       .then((result) => result.json())
       .then((data) => {
         const cast = [data.cast[0].name, data.cast[1].name, data.cast[2].name];
-        console.log("getCredits: " + props.id + ", " + cast);
         setThisCast(cast);
       })
   },[props.id])

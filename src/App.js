@@ -23,6 +23,24 @@ export default function App() {
   const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793"
   const [searchData, setSearchData] = React.useState([])
   const [configURL, setConfigURL] = React.useState("")
+  const tokyoDriftMovie = {
+    key: "9615",
+    id: "9615",
+    poster: "https://image.tmdb.org/t/p/w500/cm2ffqb3XovzA5ZSzyN3jnn8qv0.jpg",
+    title: "The Fast and the Furious: Tokyo Drift",
+    date: "2006-06-03",
+    overview: "In order to avoid a jail sentence, Sean Boswell heads to Tokyo to live with his military father. In a low-rent section of the city, Shaun gets caught up in the underground world of drift racing.",
+    cast: ["Lucas Black", "Nathalie Kelley", "Sung Kang"]
+  }
+  const loganMovie = {
+    key: "263115",
+    id: "263115",
+    poster: "https://image.tmdb.org/t/p/w500/fnbjcRDYn6YviCcePDnGdyAkYsB.jpg",
+    title: "Logan",
+    date: "2017-02-28",
+    overview: "In the near future, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border. But Logan's attempts to hide from the world and his legacy are upended when a young mutant arrives, pursued by dark forces.",
+    cast: ["Hugh Jackman", "Dafne Keen", "Patrick Stewart"]
+  }
 
   const searchList = searchData.map((movie) => {
     return (
@@ -113,12 +131,12 @@ export default function App() {
 
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
-    setWatched(prevWatched => [movie, ...prevWatched])
+    setWatched(prevWatched => [movie, ...prevWatched]);
   }
 
   // Add movie object to unwatched list (used in SearchTiles.js)
   function addToUnwatched(movie) {
-    setUnwatched(prevUnwatched => [movie, ...prevUnwatched])
+    setUnwatched(prevUnwatched => [movie, ...prevUnwatched]);
   }
 
   function removeFromWatched(id) {
@@ -233,6 +251,12 @@ export default function App() {
         setDetailModal={setDetailModal}
         watchedLength={getWatchedLength}
         unwatchedLength={getUnwatchedLength}
+        tokyoDriftMovie={tokyoDriftMovie}
+        loganMovie={loganMovie}
+        addToUnwatched={addToUnwatched}
+        addToWatched={addToWatched}
+        inWatchedList={inWatchedList}
+        inUnwatchedList={inUnwatchedList}
       />
 
       {/* Searchbar list */}

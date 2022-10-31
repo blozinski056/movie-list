@@ -1,7 +1,6 @@
 import React from "react"
 
 export default function Tiles(props) {
-
   function showDetails() {
     // some animation to transition
     props.setDetails({

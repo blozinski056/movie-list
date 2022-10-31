@@ -15,7 +15,8 @@ export default function DetailModal(props) {
         poster: props.poster,
         title: props.title,
         date: props.date,
-        overview: props.overview
+        overview: props.overview,
+        cast: props.cast
       }
     )
 
@@ -44,7 +45,6 @@ export default function DetailModal(props) {
           src={props.poster}
           alt="Poster no longer available in API database 😭"
         />
-        <noscript>{console.log(props.id)}</noscript>
         <h1 className="detail-modal-title">{props.title}</h1>
         <h1 className="detail-modal-date">{props.convertDate(props.date)}</h1>
         <h5>Starring: {props.cast[0] + ", " + props.cast[1] + ", " + props.cast[2]}</h5>

@@ -26,22 +26,24 @@ export default function Navbar(props) {
           <img src="images/search-icon-white.png" alt="" />
         </button>
       </form>
-      
       <h1 className="nav-title">MovieTracker</h1>
-
-
       <img
         className="nav-menu-icon"
         src="./images/menu-icon.png"
         onClick={() => setMenuOn(prevMenuOn => !prevMenuOn)}
         alt=""
       />
-
       {menuOn &&
           <MenuModal 
-            setModal={props.setModal}
-            watchedLength={props.watchedLength()}
-            unwatchedLength={props.unwatchedLength()}
+            setMenuOn={setMenuOn}
+            watchedLength={props.watchedLength}
+            unwatchedLength={props.unwatchedLength}
+            tokyoDriftMovie={props.tokyoDriftMovie}
+            loganMovie={props.loganMovie}
+            addToUnwatched={props.addToUnwatched}
+            addToWatched={props.addToWatched}
+            inWatchedList={props.inWatchedList}
+            inUnwatchedList={props.inUnwatchedList}
           />
       }
     </div>
