@@ -1,23 +1,27 @@
 import React from "react"
 
-export default function MenuModal(props) {
+export default function MenuModal({setMenuOn, getWatchedLength, getUnwatchedLength, tokyoDriftMovie, loganMovie, addToUnwatched, addToWatched, inWatchedList, inUnwatchedList, signedIn, setSignedIn}) {
   const [wrongCreds, setWrongCreds] = React.useState(false)
-  const [signedIn, setSignedIn] = React.useState(false)
 
   function submit(e) {
     e.preventDefault();
     const un = document.querySelector(".mm-username").value;
     const pw = document.querySelector(".mm-password").value;
-    // with database: check credentials against data
+    // WITH DATABASE:
+    // - check credentials in database
+    // - check if movies from account are movies currently displayed
+    // - when signing out save new movies to database
+
+    // WITHOUT DATABASE:
+    // - compare 2 movie variables with movies currently displayed; display if not shown
     if(un === "admin" && pw === "admin") {
-      // with database: check if movies are already on the list
-      if(!props.inWatchedList(props.tokyoDriftMovie.id) && !props.inUnwatchedList(props.tokyoDriftMovie.id)) {
-        props.addToWatched(props.tokyoDriftMovie);
+      if(!inWatchedList(tokyoDriftMovie.id) && !inUnwatchedList(tokyoDriftMovie.id)) {
+        addToWatched(tokyoDriftMovie);
       }
-      if(!props.inWatchedList(props.loganMovie.id) && !props.inUnwatchedList(props.loganMovie.id)) {
-        props.addToUnwatched(props.loganMovie);
+      if(!inWatchedList(loganMovie.id) && !inUnwatchedList(loganMovie.id)) {
+        addToUnwatched(loganMovie);
       }
-      props.setMenuOn(false);
+      setMenuOn(false);
       setWrongCreds(false);
       setSignedIn(true);
     } else {
@@ -27,12 +31,12 @@ export default function MenuModal(props) {
 
   return (
     <div className="menu-modal">
-      <div className="menu-modal-overlay" onClick={() => props.setMenuOn(false)}></div>
+      <div className="menu-modal-overlay" onClick={() => setMenuOn(false)}></div>
       <div className="menu-modal-info">
         <div className="menu-modal-drop-down"></div>
-        <h1>{"Watched: " + props.watchedLength()}</h1>
-        <h1>{"Unwatched: " + props.unwatchedLength()}</h1>
-        {wrongCreds && <h5>Incorrect username/password!</h5>}
+        <h1>{"Watched: " + getWatchedLength()}</h1>
+        <h1>{"Unwatched: " + getUnwatchedLength()}</h1>
+        {wrongCreds && <h5 style={{color:"red"}}>Incorrect username/password!</h5>}
         {!signedIn &&
           <form className="mm-form" onSubmit={submit}>
             <input className="mm-username" placeholder="USERNAME" />

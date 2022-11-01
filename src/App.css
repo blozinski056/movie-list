@@ -3,12 +3,12 @@
   box-sizing: border-box;
   font-family: 'Kanit', sans-serif;
   color: white;
-  /* font-family: 'Prompt', sans-serif; */
 }
 
 body {
   display: flex;
   background-color: black;
+  min-width: 800px;
 }
 
 section {
@@ -37,8 +37,8 @@ button {
   grid-template-columns: repeat(3, 1fr);
   background-color: transparent;
   height: 60px;
+  min-width: 800px;
   width: 100%;
-  z-index: 10;
 }
 
 .nav-search-container {
@@ -51,12 +51,14 @@ button {
 .nav-search {
   position: relative;
   background-color: rgb(39, 39, 39);
-  border: solid 2px inset rgb(80, 80, 80);
+  border: 2px inset rgb(150, 0, 0);
+  outline: none;
   border-radius: 10px;
   height: 30px;
   width: 200px;
   color: white;
   padding-left: 10px;
+  z-index: 5;
 }
 
 .nav-search-button {
@@ -70,6 +72,7 @@ button {
   background-color: rgb(39, 39, 39);
   margin-left: 10px;
   cursor: pointer;
+  z-index: 5;
 }
 
 .nav-search-button > img {
@@ -80,17 +83,34 @@ button {
 .nav-title {
   text-align: center;
   padding: 10px 0;
-  color: gray;
-  text-shadow: 2px 2px white;
+  color: rgb(150, 0, 0);
+  text-shadow: 2px 2px gray;
+}
+
+.nav-search-menus {
+  display: flex;
+  justify-content: flex-end;
+  justify-self: flex-end;
+  align-self: flex-start;
+  margin-top: 20px;
+  min-width: 100px;
+  margin-right: 50px;
+}
+
+.friends-menu-icon {
+  height: 30px;
+  width: 30px;
+  margin-right: 50px;
+  z-index: 4;
+  cursor: pointer;
 }
 
 .nav-menu-icon {
-  justify-self: flex-end;
-  margin-right: 50px;
   height: 30px;
   width: 30px;
   cursor: pointer;
-  z-index: 25;
+  z-index: 4;
+  margin-right: 0;
 }
 
 /***************/
@@ -103,7 +123,7 @@ button {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 3;
+  z-index: 4;
 }
 
 .modal-list {
@@ -239,7 +259,7 @@ button {
   font-weight: 500;
 }
 
-.search-tiles-buttons-container {
+.search-tb-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -247,33 +267,35 @@ button {
   width: 200px;
 }
 
-.search-tiles-buttons {
+.search-tb-watched,
+.search-tb-unwatched {
   width: 200px;
   height: 30px;
   margin: 5px;
   cursor: pointer;
 }
 
-.search-tiles-buttons:hover {
+.search-tb-watched:hover,
+.search-tb-unwatched:hover {
   transform: translate(-1px, -1px);
   box-shadow: 1px 1px 3px black;
 }
 
-.search-tiles-buttons:active {
+.search-tb-watched:active,
+.search-tb-unwatched:active {
   transform: translate(1px, 1px);
   box-shadow: inset 1px 1px 3px black;
 }
 
-.search-tiles-buttons.watched {
+.search-tb-watched {
   background-color: green;
 }
 
-.search-tiles-buttons.unwatched {
+.search-tb-unwatched {
   background-color: red;
 }
 
-.search-tiles-watched,
-.search-tiles-unwatched {
+.search-tiles-watched {
   width: 200px;
   font-size: 15px;
 }
@@ -283,6 +305,7 @@ button {
 /***********/
 .watched {
   margin-top: 60px;
+  min-width: 800px;
 }
 
 .watched-container {
@@ -292,12 +315,13 @@ button {
   justify-content: flex-start;
   height: 100%;
   width: 100%;
+  min-width: 800px;
   background-color: rgb(50, 50, 50);
   border-radius: 20px;
-  /* padding: 30px 30px 20px 30px; */
   overflow-x: auto;
   overflow-y: hidden;
   gap: 20px;
+  border: inset 10px rgb(150, 0, 0);
 }
 
 .watched-title {
@@ -307,7 +331,6 @@ button {
   margin-top: 50px;
   left: 10px;
   font-size: 20px;
-  /* color: rgb(180, 180, 180); */
   color: rgb(90, 90, 90);
   text-shadow: -2px 0px rgb(10, 10, 10);
 }
@@ -320,7 +343,6 @@ button {
   width: 100%;
   background-color: rgb(50, 50, 50);
   border-radius: 20px;
-  /* padding: 30px 30px 40px 30px; */
   padding: 20px 20px 20px 5px;
   margin: 0 15px 0 30px;
   overflow-x: auto;
@@ -346,6 +368,9 @@ button {
 /*************/
 /* Unwatched */
 /*************/
+.unwatched {
+  min-width: 800px;
+}
 .unwatched-container {
   position: relative;
   display: flex;
@@ -353,12 +378,12 @@ button {
   justify-content: flex-start;
   height: 100%;
   width: 100%;
+  min-width: 800px;
   background-color: rgb(50, 50, 50);
   border-radius: 20px;
-  /* padding: 30px 30px 20px 30px; */
-  /* padding: 0 30px; */
   overflow-x: auto;
   overflow-y: hidden;
+  border: inset 10px rgb(150, 0, 0);
   gap: 20px;
 }
 
@@ -369,7 +394,6 @@ button {
   margin-top: 100px;
   left: 10px;
   font-size: 20px;
-  /* color: rgb(180, 180, 180); */
   color: rgb(90, 90, 90);
   text-shadow: -2px 0px rgb(10, 10, 10);
 }
@@ -382,7 +406,6 @@ button {
   width: 100%;
   background-color: rgb(50, 50, 50);
   border-radius: 20px;
-  /* padding: 30px 30px 40px 30px; */
   padding: 20px 20px 20px 5px;
   margin: 0 15px 0 30px;
   overflow-x: auto;
@@ -412,9 +435,9 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: 320px; */
   height: 100%;
-  width: auto;
+  max-width: 220px;
+  min-width: 213.33px;
   cursor: pointer;
 }
 
@@ -450,7 +473,7 @@ button {
   transform: translateX(-50%) translateY(-50%);
   padding: 30px;
   border-radius: 20px;
-  z-index: 5;
+  z-index: 10;
 }
 
 .detail-modal > h5 {
@@ -533,29 +556,27 @@ button {
 .menu-modal-info {
   position: fixed;
   right: 40px;
-  top: 80px;
+  top: 70px;
   background-color: gray;
   width: 250px;
   border-radius: 10px;
   animation: open 0.4s ease forwards;
   transform-origin: 50% -20px 20px;
-  box-shadow: 3px 3px 10px black;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
   padding: 15px;
-  z-index: 15;
+  z-index: 4;
 }
 
 .menu-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: transparent;
   height: 100vh;
   width: 100vw;
-  z-index: 12;
+  z-index: 3;
 }
 
 .menu-modal-info > h1 {
@@ -571,9 +592,7 @@ button {
 }
 
 .mm-form > h5 {
-  /* color: rgb(179, 0, 0); */
   color: rgb(170, 0, 0);
-  /* -webkit-text-stroke: 1px red; */
 }
 
 .mm-username, .mm-password {
@@ -593,18 +612,19 @@ button {
   transform: rotate(45deg);
   background-color: gray;
   right: 10px;
-  top: -10px;
+  top: -12px;
 }
 
 .mm-login {
   align-self: center;
   margin-top: 15px;
-  width: 60px;
+  width: auto;
   height: 33px;
   align-items: center;
   padding: 5px;
   background-color: rgb(65, 65, 65);
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .menu-modal-login:hover {
@@ -624,4 +644,139 @@ button {
   100% {
     transform: scaleY(100%);
   }
+}
+
+/***************/
+/* FriendsMenu */
+/***************/
+.fm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 3;
+}
+
+.fm-info-container {
+  position: fixed;
+  top: 70px;
+  right: 100px;
+  border-radius: 10px;
+  animation: open 0.4s ease forwards;
+  transform-origin: 50% -20px 20px;
+  background-color: gray;
+  z-index: 4;
+}
+
+.fm-info {
+  height: fit-content;
+  max-height: calc(100vh - 70px);
+  width: 400px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-rows: repeat(auto, 100px);
+  gap: 5px;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.fm-info::after {
+  content: "";
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
+  transform: rotate(45deg);
+  background-color: gray;
+  right: 30px;
+  top: -12px;
+  z-index: -1;
+}
+
+.fm-info::-webkit-scrollbar {
+  width: 7px;
+}
+
+.fm-info::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.fm-info::-webkit-scrollbar-thumb {
+  background-color: rgb(190, 190, 190);
+  border-radius: 5px;
+}
+
+.fm-add-friend {
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgb(50, 50, 50);
+}
+
+.fm-add-friend:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 2px black;
+}
+
+/***************/
+/* FriendTiles */
+/***************/
+.friend-tiles {
+  width: 100%;
+  height: 100px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 100px 1fr 50px;
+  padding: 5px;
+  align-items: center;
+  justify-items: center;
+  border: solid 1px rgb(61, 61, 61);
+  border-radius: 10px;
+  background-color: rgb(50, 50, 50);
+}
+
+.friend-tiles:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 2px black;
+}
+
+.ft-profile-pic {
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+}
+
+.ft-info {
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+}
+
+.ft-info h1 {
+  font-size: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ft-info h5 {
+  font-weight: 300;
+}
+
+.ft-unfriend {
+  height: 30px;
+  width: 30px;
+  border-radius: 7px;
+}
+
+.ft-unfriend:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
 }

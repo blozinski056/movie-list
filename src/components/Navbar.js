@@ -1,17 +1,25 @@
 import React from "react"
-import MenuModal from "./MenuModal.js"
 
-export default function Navbar(props) {
-  const [menuOn, setMenuOn] = React.useState(false)
-
+export default function Navbar({setSearch, setModal, setDetailModal, setMenuOn, signedIn, setFriendsMenu}) {
   // Sends searched keyword back to App.js to use in API search and opens modal
   function searchKeyword(event) {
     event.preventDefault();
 
     const searchWord = document.querySelector(".nav-search")
-    props.setSearch(searchWord.value)
-    props.setModal(true)
-    props.setDetailModal(false)
+    setSearch(searchWord.value)
+    setModal(true)
+    setDetailModal(false)
+    setMenuOn(false)
+  }
+
+  function openFriendsMenu() {
+    setMenuOn(false);
+    setFriendsMenu(prevFriendsMenu => !prevFriendsMenu);
+  }
+
+  function openMenuModal() {
+    setFriendsMenu(false);
+    setMenuOn(prevMenuOn => !prevMenuOn);
   }
 
   return (
@@ -27,25 +35,22 @@ export default function Navbar(props) {
         </button>
       </form>
       <h1 className="nav-title">MovieTracker</h1>
-      <img
-        className="nav-menu-icon"
-        src="./images/menu-icon.png"
-        onClick={() => setMenuOn(prevMenuOn => !prevMenuOn)}
-        alt=""
-      />
-      {menuOn &&
-          <MenuModal 
-            setMenuOn={setMenuOn}
-            watchedLength={props.watchedLength}
-            unwatchedLength={props.unwatchedLength}
-            tokyoDriftMovie={props.tokyoDriftMovie}
-            loganMovie={props.loganMovie}
-            addToUnwatched={props.addToUnwatched}
-            addToWatched={props.addToWatched}
-            inWatchedList={props.inWatchedList}
-            inUnwatchedList={props.inUnwatchedList}
+      <div className="nav-search-menus">
+        {signedIn &&
+          <img
+            className="friends-menu-icon"
+            src="./images/friends-icon.png"
+            onClick={openFriendsMenu}
+            alt=""
           />
-      }
+        }
+        <img
+          className="nav-menu-icon"
+          src="./images/menu-icon.png"
+          onClick={openMenuModal}
+          alt=""
+        />
+      </div>
     </div>
   )
 }

@@ -1,22 +1,22 @@
 import React from "react"
 
-export default function DetailModal(props) {
+export default function DetailModal({details, inUnwatchedList, addToWatched, removeFromWatched, removeFromUnwatched, convertDate, setDetailModal}) {
 
   function close() {
-    props.setDetailModal(false)
+    setDetailModal(false)
   }
 
   function move() {
     removeUnwatched()
-    props.addToWatched(
+    addToWatched(
       {
-        key: props.id,
-        id: props.id,
-        poster: props.poster,
-        title: props.title,
-        date: props.date,
-        overview: props.overview,
-        cast: props.cast
+        key: details.id,
+        id: details.id,
+        poster: details.poster,
+        title: details.title,
+        date: details.date,
+        overview: details.overview,
+        cast: details.cast
       }
     )
 
@@ -24,13 +24,13 @@ export default function DetailModal(props) {
   }
 
   function removeWatched() {
-    props.removeFromWatched(props.id)
+    removeFromWatched(details.id)
 
     close()
   }
 
   function removeUnwatched() {
-    props.removeFromUnwatched(props.id)
+    removeFromUnwatched(details.id)
 
     close()
   }
@@ -42,14 +42,14 @@ export default function DetailModal(props) {
       <div className="detail-modal">
         <img
           className="search-tiles-poster"
-          src={props.poster}
+          src={details.poster}
           alt="Poster no longer available in API database 😭"
         />
-        <h1 className="detail-modal-title">{props.title}</h1>
-        <h1 className="detail-modal-date">{props.convertDate(props.date)}</h1>
-        <h5>Starring: {props.cast[0] + ", " + props.cast[1] + ", " + props.cast[2]}</h5>
-        <p className="detail-modal-overview">{props.overview}</p>
-        {props.inUnwatchedList(props.id)
+        <h1 className="detail-modal-title">{details.title}</h1>
+        <h1 className="detail-modal-date">{convertDate(details.date)}</h1>
+        <h5>Starring: {details.cast}</h5>
+        <p className="detail-modal-overview">{details.overview}</p>
+        {inUnwatchedList(details.id)
           ? <div className="detail-modal-buttons">
               <button className="detail-modal-move" onClick={move}>
                 + Move to Watched List

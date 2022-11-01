@@ -16,7 +16,7 @@ export default function Tiles(props) {
 
   return (
     <div className="tiles" onClick={showDetails}>
-      <img className="tiles-poster" src={props.poster} alt="" />
+      <img className="tiles-poster" src={props.poster} alt="Poster no longer available in API database 😭" />
     </div>
   )
 }

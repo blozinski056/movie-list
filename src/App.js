@@ -7,6 +7,10 @@ import Tiles from "./components/Tiles.js"
 import SearchModal from "./components/SearchModal.js"
 import SearchTiles from "./components/SearchTiles.js"
 import DetailModal from "./components/DetailModal.js"
+import MenuModal from "./components/MenuModal.js"
+import FriendsMenu from "./components/FriendsMenu.js"
+import FriendTiles from "./components/FriendTiles.js"
+import {nanoid} from "nanoid"
 
 export default function App() {
   // Movie lists
@@ -14,43 +18,47 @@ export default function App() {
   const [unwatched, setUnwatched] = React.useState([])
   // If modal is visible
   const [modal, setModal] = React.useState(false)
+  const [menuOn, setMenuOn] = React.useState(false)
+  const [detailModal, setDetailModal] = React.useState(false)
+  const [friendsMenu, setFriendsMenu] = React.useState(false)
+  const [signedIn, setSignedIn] = React.useState(false)
   // Search keyword
   const [search, setSearch] = React.useState("")
-  const [detailModal, setDetailModal] = React.useState(false)
   const [details, setDetails] = React.useState({id: "", poster: "", title: "", date: "", overview: ""})
+  const [friendsTilesList, setFriendsTilesList] = React.useState([])
   // Variables for API fetch
   const BASEURL = "https://api.themoviedb.org/3/"
   const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793"
   const [searchData, setSearchData] = React.useState([])
   const [configURL, setConfigURL] = React.useState("")
+  // Temp data for use without database
   const tokyoDriftMovie = {
-    key: "9615",
-    id: "9615",
+    key: 9615,
+    id: 9615,
     poster: "https://image.tmdb.org/t/p/w500/cm2ffqb3XovzA5ZSzyN3jnn8qv0.jpg",
     title: "The Fast and the Furious: Tokyo Drift",
     date: "2006-06-03",
     overview: "In order to avoid a jail sentence, Sean Boswell heads to Tokyo to live with his military father. In a low-rent section of the city, Shaun gets caught up in the underground world of drift racing.",
-    cast: ["Lucas Black", "Nathalie Kelley", "Sung Kang"]
+    cast: "Lucas Black, Nathalie Kelley, Sung Kang"
   }
   const loganMovie = {
-    key: "263115",
-    id: "263115",
+    key: 263115,
+    id: 263115,
     poster: "https://image.tmdb.org/t/p/w500/fnbjcRDYn6YviCcePDnGdyAkYsB.jpg",
     title: "Logan",
     date: "2017-02-28",
     overview: "In the near future, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border. But Logan's attempts to hide from the world and his legacy are upended when a young mutant arrives, pursued by dark forces.",
-    cast: ["Hugh Jackman", "Dafne Keen", "Patrick Stewart"]
+    cast: "Hugh Jackman, Dafne Keen, Patrick Stewart"
   }
 
   const searchList = searchData.map((movie) => {
+    let m = movie.poster === null
+      ? {...movie, poster: ""}
+      : {...movie, poster: "".concat(configURL, movie.poster)}
     return (
       <SearchTiles 
         key={movie.id}
-        id={movie.id}
-        poster={"".concat(configURL, movie.poster)}
-        title={movie.title}
-        date={movie.date}
-        overview={movie.overview}
+        movie={m}
         addToWatched={addToWatched}
         addToUnwatched={addToUnwatched}
         inWatchedList={inWatchedList}
@@ -112,8 +120,12 @@ export default function App() {
       fetch(url)
       .then((result) => result.json())
       .then((data) => {
-        const searchItems = data.results.map((item) => {
-          return (
+        const searchItems = [];
+        data.results.forEach((item) => {
+          if(item.overview === "") {
+            return;
+          }
+          searchItems.push(
             {
               key: item.id,
               id: item.id,
@@ -126,6 +138,7 @@ export default function App() {
         })
         setSearchData(searchItems);
       })
+      .catch((error) => console.log(error));
     }
   }, [search])
 
@@ -237,9 +250,54 @@ export default function App() {
         month = "Dec";
         break;
       default:
-        month = "Jan";
+        month = "";
     }
-    return month + " " + day + ", " + year;
+    return month === "" ? "*No date found in API database*" : month + " " + day + ", " + year
+  }
+
+  // WITH DATABASE:
+  // - render new page to search other profiles
+  // - add profile to list
+  // function addFriend(pp, un, wc, uc, pURL) {
+  //   let newFriend = {
+  //     profilePic: pp,
+  //     username: un,
+  //     watchedCount: wc,
+  //     unwatchedCount: uc,
+  //     profileURL: pURL
+  //   }
+  //   setFriendsTilesList(prevList => [newFriend, ...prevList]);
+  // }
+
+  // WITHOUT DATABASE:
+  // - just add tiles with my picture
+  function addFriend() {
+    let id = nanoid();
+    setFriendsTilesList(prevTiles => [
+      <FriendTiles
+        key={id}
+        id={id}
+        profilePic={"./images/profile-picture.JPG"}
+        username={"blozinski056"}
+        watchedCount={235}
+        unwatchedCount={132}
+        profileURL={""}
+        removeFriend={removeFriend}
+      />,
+      ...prevTiles
+    ])
+  }
+
+  function removeFriend(id) {
+    let newList = [];
+    friendsTilesList.forEach((tile) => {
+      if(tile.id === id) {
+        return;
+      } else {
+        newList.push(tile);
+      }
+    })
+    setFriendsTilesList(newList);
   }
 
   return (
@@ -249,15 +307,34 @@ export default function App() {
         setSearch={setSearch}
         setModal={setModal}
         setDetailModal={setDetailModal}
-        watchedLength={getWatchedLength}
-        unwatchedLength={getUnwatchedLength}
-        tokyoDriftMovie={tokyoDriftMovie}
-        loganMovie={loganMovie}
-        addToUnwatched={addToUnwatched}
-        addToWatched={addToWatched}
-        inWatchedList={inWatchedList}
-        inUnwatchedList={inUnwatchedList}
+        setMenuOn={setMenuOn}
+        signedIn={signedIn}
+        setFriendsMenu={setFriendsMenu}
       />
+
+      {menuOn &&
+        <MenuModal 
+          setMenuOn={setMenuOn}
+          getWatchedLength={getWatchedLength}
+          getUnwatchedLength={getUnwatchedLength}
+          tokyoDriftMovie={tokyoDriftMovie}
+          loganMovie={loganMovie}
+          addToUnwatched={addToUnwatched}
+          addToWatched={addToWatched}
+          inWatchedList={inWatchedList}
+          inUnwatchedList={inUnwatchedList}
+          signedIn={signedIn}
+          setSignedIn={setSignedIn}
+        />
+      }
+
+      {friendsMenu &&
+        <FriendsMenu
+          setFriendsMenu={setFriendsMenu}
+          friendsTilesList={friendsTilesList}
+          addFriend={addFriend}
+        />
+      }
 
       {/* Searchbar list */}
       {(modal && search.length > 0) &&
@@ -279,16 +356,9 @@ export default function App() {
 
       {detailModal &&
         <DetailModal 
-          id={details.id}
-          poster={details.poster}
-          title={details.title}
-          date={details.date}
-          overview={details.overview}
-          cast={details.cast}
-          inWatchedList={inWatchedList}
+          details={details}
           inUnwatchedList={inUnwatchedList}
           addToWatched={addToWatched}
-          addToUnwatched={addToUnwatched}
           removeFromWatched={removeFromWatched}
           removeFromUnwatched={removeFromUnwatched}
           convertDate={convertDate}

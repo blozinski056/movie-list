@@ -1,33 +1,43 @@
 import React from "react"
 
-export default function SearchTiles(props) {
+export default function SearchTiles({movie, addToWatched, addToUnwatched, inWatchedList, inUnwatchedList, convertDate}) {
   const [added, setAdded] = React.useState(
-    props.inWatchedList(props.id) || props.inUnwatchedList(props.id)
+    inWatchedList(movie.id) || inUnwatchedList(movie.id)
   )
-  const [watched, setWatched] = React.useState(props.inWatchedList(props.id))
+  const [watched, setWatched] = React.useState(inWatchedList(movie.id))
   const [thisCast, setThisCast] = React.useState([])
   const BASEURL = "https://api.themoviedb.org/3/"
   const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793"
 
   React.useEffect(() => {
-    const url = "".concat(BASEURL, "movie/", props.id, "/credits", APIKEY);
+    const url = "".concat(BASEURL, "movie/", movie.id, "/credits", APIKEY);
     fetch(url)
       .then((result) => result.json())
       .then((data) => {
-        const cast = [data.cast[0].name, data.cast[1].name, data.cast[2].name];
-        setThisCast(cast);
+        let castList = "";
+        if(data.cast.length > 0) {
+          castList += data.cast[0].name;
+          let i = 1;
+          while(data.cast[i] != null && i < 3) {
+            castList += ", " + data.cast[i].name;
+            i++;
+          }
+        }
+        castList = castList === "" ? "*No cast found in API database*" : castList;
+        setThisCast(castList);
       })
-  },[props.id])
+      .catch((error) => console.log(error));
+  },[movie.id])
 
   function addToWatchedList() {
-    props.addToWatched(
+    addToWatched(
       {
-        key: props.id,
-        id: props.id,
-        poster: props.poster,
-        title: props.title,
-        date: props.date,
-        overview: props.overview,
+        key: movie.id,
+        id: movie.id,
+        poster: movie.poster,
+        title: movie.title,
+        date: movie.date,
+        overview: movie.overview,
         cast: thisCast
       }
     )
@@ -36,14 +46,14 @@ export default function SearchTiles(props) {
   }
 
   function addToUnwatchedList() {
-    props.addToUnwatched(
+    addToUnwatched(
       {
-        key: props.id,
-        id: props.id,
-        poster: props.poster,
-        title: props.title,
-        date: props.date,
-        overview: props.overview,
+        key: movie.id,
+        id: movie.id,
+        poster: movie.poster,
+        title: movie.title,
+        date: movie.date,
+        overview: movie.overview,
         cast: thisCast
       }
     )
@@ -56,33 +66,33 @@ export default function SearchTiles(props) {
       <div className="search-tiles-poster-container">
         <img
           className="search-tiles-poster"
-          src={props.poster}
+          src={movie.poster}
           alt="Poster no longer available in API database 😭"
         />
       </div>
 
       <div className="search-tiles-info">
         <div className="search-tiles-header">
-          <h1 className="search-tiles-title">{props.title}</h1>
-          <h1 className="search-tiles-date">{props.convertDate(props.date)}</h1>
+          <h1 className="search-tiles-title">{movie.title}</h1>
+          <h1 className="search-tiles-date">{convertDate(movie.date)}</h1>
         </div>
-        <h5>Starring: {thisCast[0] + ", " + thisCast[1] + ", " + thisCast[2]}</h5>
-        <p className="search-tiles-overview">{props.overview}</p>
+        <h5>Starring: {thisCast}</h5>
+        <p className="search-tiles-overview">{movie.overview}</p>
       </div>
 
       {added
         ? <div>
             <h1 className="search-tiles-watched">✔️ Added to {watched ? "Watched" : "Unwatched"} List</h1>
           </div>
-        : <div className="search-tiles-buttons-container">
+        : <div className="search-tb-container">
             <button
-              className="search-tiles-buttons watched"
+              className="search-tb-watched"
               onClick={addToWatchedList}
             >
               + Add to Watched List
             </button>
             <button
-              className="search-tiles-buttons unwatched"
+              className="search-tb-unwatched"
               onClick={addToUnwatchedList}
             >
               + Add to Unwatched List
