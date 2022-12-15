@@ -1,38 +1,45 @@
-import React from "react"
+import React from "react";
 
-export default function DetailModal({details, inUnwatchedList, addToWatched, removeFromWatched, removeFromUnwatched, convertDate, setDetailModal}) {
-
+export default function DetailModal({
+  details,
+  inUnwatchedList,
+  addToWatched,
+  removeFromWatched,
+  removeFromUnwatched,
+  convertDate,
+  // setDetailModal,
+  setModal,
+}) {
   function close() {
-    setDetailModal(false)
+    setModal(0);
+    // setDetailModal(false)
   }
 
   function move() {
-    removeUnwatched()
-    addToWatched(
-      {
-        key: details.id,
-        id: details.id,
-        poster: details.poster,
-        title: details.title,
-        date: details.date,
-        overview: details.overview,
-        cast: details.cast
-      }
-    )
+    removeUnwatched();
+    addToWatched({
+      key: details.id,
+      id: details.id,
+      poster: details.poster,
+      title: details.title,
+      date: details.date,
+      overview: details.overview,
+      cast: details.cast,
+    });
 
-    close()
+    close();
   }
 
   function removeWatched() {
-    removeFromWatched(details.id)
+    removeFromWatched(details.id);
 
-    close()
+    close();
   }
 
   function removeUnwatched() {
-    removeFromUnwatched(details.id)
+    removeFromUnwatched(details.id);
 
-    close()
+    close();
   }
 
   return (
@@ -49,22 +56,23 @@ export default function DetailModal({details, inUnwatchedList, addToWatched, rem
         <h1 className="detail-modal-date">{convertDate(details.date)}</h1>
         <h5>Starring: {details.cast}</h5>
         <p className="detail-modal-overview">{details.overview}</p>
-        {inUnwatchedList(details.id)
-          ? <div className="detail-modal-buttons">
-              <button className="detail-modal-move" onClick={move}>
-                + Move to Watched List
-              </button>
-              <button className="detail-modal-remove" onClick={removeUnwatched}>
-                - Remove from Unwatched List
-              </button>
-            </div>
-          : <div className="detail-modal-buttons">
-              <button className="detail-modal-remove" onClick={removeWatched}>
-                - Remove from Watched List
-              </button>
-            </div>
-        }
+        {inUnwatchedList(details.id) ? (
+          <div className="detail-modal-buttons">
+            <button className="detail-modal-move" onClick={move}>
+              + Move to Watched List
+            </button>
+            <button className="detail-modal-remove" onClick={removeUnwatched}>
+              - Remove from Unwatched List
+            </button>
+          </div>
+        ) : (
+          <div className="detail-modal-buttons">
+            <button className="detail-modal-remove" onClick={removeWatched}>
+              - Remove from Watched List
+            </button>
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }
