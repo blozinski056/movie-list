@@ -36,20 +36,40 @@ export default function App() {
             if (item.overview === "") {
               return;
             }
-            searchItems.push({
+            // Get poster path url
+            const posterPath =
+              item.poster_path === null
+                ? ""
+                : "".concat(configURL, item.poster_path);
+            // Create movie object
+            const movieObj = {
               key: item.id,
               id: item.id,
-              poster: item.poster_path,
+              poster: posterPath,
               title: item.title,
               date: item.release_date,
               overview: item.overview,
-            });
+            };
+
+            searchItems.push(movieObj);
+
+            // searchItems.push(
+            //   <SearchTiles
+            //     key={item.id}
+            //     movie={movieObj}
+            //     addToWatched={addToWatched}
+            //     addToUnwatched={addToUnwatched}
+            //     inWatchedList={inWatchedList}
+            //     inUnwatchedList={inUnwatchedList}
+            //     convertDate={convertDate}
+            //   />
+            // );
           });
           setSearchData(searchItems);
         })
         .catch((error) => console.log(error));
     }
-  }, [search]);
+  }, [search, configURL]);
 
   // Movie lists
   const [watched, setWatched] = React.useState([]);
@@ -71,14 +91,10 @@ export default function App() {
   const [searchData, setSearchData] = React.useState([]);
 
   const searchList = searchData.map((movie) => {
-    let m =
-      movie.poster === null
-        ? { ...movie, poster: "" }
-        : { ...movie, poster: "".concat(configURL, movie.poster) };
     return (
       <SearchTiles
         key={movie.id}
-        movie={m}
+        movie={movie}
         addToWatched={addToWatched}
         addToUnwatched={addToUnwatched}
         inWatchedList={inWatchedList}
@@ -314,6 +330,9 @@ export default function App() {
       )}
 
       {/* Searchbar list */}
+      {/* {modal === 1 && (
+        <SearchModal setModal={setModal} searchData={searchData} />
+      )} */}
       {modal === 1 && (
         <SearchModal setModal={setModal} searchList={searchList} />
       )}
