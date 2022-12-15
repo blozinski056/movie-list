@@ -12,7 +12,6 @@ export default function Tiles(props) {
       cast: props.cast,
     });
     props.setModal(2);
-    // props.setDetailModal(true);
   }
 
   return (

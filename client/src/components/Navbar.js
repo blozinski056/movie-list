@@ -3,7 +3,6 @@ import React from "react";
 export default function Navbar({
   setSearch,
   setModal,
-  // setDetailModal,
   setMenuOn,
   signedIn,
   setFriendsMenu,
@@ -15,8 +14,6 @@ export default function Navbar({
     const searchWord = document.querySelector(".nav-search");
     setSearch(searchWord.value);
     setModal(1);
-    // setModal(true);
-    // setDetailModal(false);
     setMenuOn(false);
   }
 

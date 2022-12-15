@@ -13,18 +13,53 @@ import FriendTiles from "./components/FriendTiles.js";
 import { nanoid } from "nanoid";
 
 export default function App() {
+  // Get poster url configuration
+  const [configURL, setConfigURL] = React.useState("");
+  React.useEffect(() => {
+    fetch("http://localhost:5000/api/TMDB_API/config")
+      .then((res) => res.json())
+      .then((data) => {
+        setConfigURL(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  // Get search data based on search word
+  const [search, setSearch] = React.useState("");
+  React.useEffect(() => {
+    if (search.length > 0) {
+      fetch(`http://localhost:5000/api/TMDB_API/search/${search}`)
+        .then((result) => result.json())
+        .then((data) => {
+          const searchItems = [];
+          data.forEach((item) => {
+            if (item.overview === "") {
+              return;
+            }
+            searchItems.push({
+              key: item.id,
+              id: item.id,
+              poster: item.poster_path,
+              title: item.title,
+              date: item.release_date,
+              overview: item.overview,
+            });
+          });
+          setSearchData(searchItems);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [search]);
+
   // Movie lists
   const [watched, setWatched] = React.useState([]);
   const [unwatched, setUnwatched] = React.useState([]);
   // If modal is visible
   const [modal, setModal] = React.useState(0);
-  // const [detailModal, setDetailModal] = React.useState(false);
-  // const [modal, setModal] = React.useState(false);
   const [menuOn, setMenuOn] = React.useState(false);
   const [friendsMenu, setFriendsMenu] = React.useState(false);
   const [signedIn, setSignedIn] = React.useState(false);
   // Search keyword
-  const [search, setSearch] = React.useState("");
   const [details, setDetails] = React.useState({
     id: "",
     poster: "",
@@ -33,32 +68,7 @@ export default function App() {
     overview: "",
   });
   const [friendsTilesList, setFriendsTilesList] = React.useState([]);
-  // Variables for API fetch
-  const BASEURL = "https://api.themoviedb.org/3/";
-  const APIKEY = "?api_key=d90c7ae78152fcc5c6bd630628c32793";
   const [searchData, setSearchData] = React.useState([]);
-  const [configURL, setConfigURL] = React.useState("");
-  // Temp data for use without database
-  // const tokyoDriftMovie = {
-  //   key: 9615,
-  //   id: 9615,
-  //   poster: "https://image.tmdb.org/t/p/w500/cm2ffqb3XovzA5ZSzyN3jnn8qv0.jpg",
-  //   title: "The Fast and the Furious: Tokyo Drift",
-  //   date: "2006-06-03",
-  //   overview:
-  //     "In order to avoid a jail sentence, Sean Boswell heads to Tokyo to live with his military father. In a low-rent section of the city, Shaun gets caught up in the underground world of drift racing.",
-  //   cast: "Lucas Black, Nathalie Kelley, Sung Kang",
-  // };
-  // const loganMovie = {
-  //   key: 263115,
-  //   id: 263115,
-  //   poster: "https://image.tmdb.org/t/p/w500/fnbjcRDYn6YviCcePDnGdyAkYsB.jpg",
-  //   title: "Logan",
-  //   date: "2017-02-28",
-  //   overview:
-  //     "In the near future, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border. But Logan's attempts to hide from the world and his legacy are upended when a young mutant arrives, pursued by dark forces.",
-  //   cast: "Hugh Jackman, Dafne Keen, Patrick Stewart",
-  // };
 
   const searchList = searchData.map((movie) => {
     let m =
@@ -89,7 +99,6 @@ export default function App() {
         overview={item.overview}
         cast={item.cast}
         setModal={setModal}
-        // setDetailModal={setDetailModal}
         setDetails={setDetails}
       />
     );
@@ -106,51 +115,10 @@ export default function App() {
         overview={item.overview}
         cast={item.cast}
         setModal={setModal}
-        // setDetailModal={setDetailModal}
         setDetails={setDetails}
       />
     );
   });
-
-  React.useEffect(() => {
-    const url = "".concat(BASEURL, "configuration", APIKEY);
-    fetch(url)
-      .then((result) => result.json())
-      .then((data) => {
-        const config = data.images.secure_base_url;
-        const sizes = data.images.poster_sizes[4];
-        const posterLink = "".concat(config, sizes);
-        setConfigURL(posterLink);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  // Updating searched items based on search keyword
-  React.useEffect(() => {
-    if (search.length > 0) {
-      const url = "".concat(BASEURL, "search/movie", APIKEY, "&query=", search);
-      fetch(url)
-        .then((result) => result.json())
-        .then((data) => {
-          const searchItems = [];
-          data.results.forEach((item) => {
-            if (item.overview === "") {
-              return;
-            }
-            searchItems.push({
-              key: item.id,
-              id: item.id,
-              poster: item.poster_path,
-              title: item.title,
-              date: item.release_date,
-              overview: item.overview,
-            });
-          });
-          setSearchData(searchItems);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [search]);
 
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
@@ -318,7 +286,6 @@ export default function App() {
       <Navbar
         setSearch={setSearch}
         setModal={setModal}
-        // setDetailModal={setDetailModal}
         setMenuOn={setMenuOn}
         signedIn={signedIn}
         setFriendsMenu={setFriendsMenu}
@@ -329,8 +296,6 @@ export default function App() {
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
-          // tokyoDriftMovie={tokyoDriftMovie}
-          // loganMovie={loganMovie}
           addToUnwatched={addToUnwatched}
           addToWatched={addToWatched}
           inWatchedList={inWatchedList}
@@ -349,7 +314,7 @@ export default function App() {
       )}
 
       {/* Searchbar list */}
-      {modal === 1 && search.length > 0 && (
+      {modal === 1 && (
         <SearchModal setModal={setModal} searchList={searchList} />
       )}
 
@@ -362,7 +327,6 @@ export default function App() {
           removeFromUnwatched={removeFromUnwatched}
           convertDate={convertDate}
           setModal={setModal}
-          // setDetailModal={setDetailModal}
         />
       )}
 
@@ -371,18 +335,6 @@ export default function App() {
 
       {/* Movies want to see */}
       <Unwatched tiles={uw} />
-
-      {/* {detailModal && (
-        <DetailModal
-          details={details}
-          inUnwatchedList={inUnwatchedList}
-          addToWatched={addToWatched}
-          removeFromWatched={removeFromWatched}
-          removeFromUnwatched={removeFromUnwatched}
-          convertDate={convertDate}
-          setDetailModal={setDetailModal}
-        />
-      )} */}
     </div>
   );
 }

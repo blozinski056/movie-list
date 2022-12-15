@@ -7,12 +7,10 @@ export default function DetailModal({
   removeFromWatched,
   removeFromUnwatched,
   convertDate,
-  // setDetailModal,
   setModal,
 }) {
   function close() {
     setModal(0);
-    // setDetailModal(false)
   }
 
   function move() {
