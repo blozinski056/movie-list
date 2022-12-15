@@ -13,8 +13,12 @@ import FriendTiles from "./components/FriendTiles.js";
 import { nanoid } from "nanoid";
 
 export default function App() {
-  // Get poster url configuration
   const [configURL, setConfigURL] = React.useState("");
+  const [modal, setModal] = React.useState(0);
+  const [search, setSearch] = React.useState("");
+  const [searchList, setSearchList] = React.useState([]);
+
+  // Get poster url configuration
   React.useEffect(() => {
     fetch("http://localhost:5000/api/TMDB_API/config")
       .then((res) => res.json())
@@ -25,7 +29,6 @@ export default function App() {
   }, []);
 
   // Get search data based on search word
-  const [search, setSearch] = React.useState("");
   React.useEffect(() => {
     if (search.length > 0) {
       fetch(`http://localhost:5000/api/TMDB_API/search/${search}`)
@@ -51,31 +54,30 @@ export default function App() {
               overview: item.overview,
             };
 
-            searchItems.push(movieObj);
+            // searchItems.push(movieObj);
 
-            // searchItems.push(
-            //   <SearchTiles
-            //     key={item.id}
-            //     movie={movieObj}
-            //     addToWatched={addToWatched}
-            //     addToUnwatched={addToUnwatched}
-            //     inWatchedList={inWatchedList}
-            //     inUnwatchedList={inUnwatchedList}
-            //     convertDate={convertDate}
-            //   />
-            // );
+            searchItems.push(
+              <SearchTiles
+                key={item.id}
+                movie={movieObj}
+                addToWatched={addToWatched}
+                addToUnwatched={addToUnwatched}
+                inWatchedList={inWatchedList}
+                inUnwatchedList={inUnwatchedList}
+                convertDate={convertDate}
+              />
+            );
           });
-          setSearchData(searchItems);
+          setSearchList(searchItems);
         })
         .catch((error) => console.log(error));
     }
-  }, [search, configURL]);
+  }, [search, modal, configURL]);
 
   // Movie lists
   const [watched, setWatched] = React.useState([]);
   const [unwatched, setUnwatched] = React.useState([]);
   // If modal is visible
-  const [modal, setModal] = React.useState(0);
   const [menuOn, setMenuOn] = React.useState(false);
   const [friendsMenu, setFriendsMenu] = React.useState(false);
   const [signedIn, setSignedIn] = React.useState(false);
@@ -88,21 +90,20 @@ export default function App() {
     overview: "",
   });
   const [friendsTilesList, setFriendsTilesList] = React.useState([]);
-  const [searchData, setSearchData] = React.useState([]);
 
-  const searchList = searchData.map((movie) => {
-    return (
-      <SearchTiles
-        key={movie.id}
-        movie={movie}
-        addToWatched={addToWatched}
-        addToUnwatched={addToUnwatched}
-        inWatchedList={inWatchedList}
-        inUnwatchedList={inUnwatchedList}
-        convertDate={convertDate}
-      />
-    );
-  });
+  // const searchList = searchList.map((movie) => {
+  //   return (
+  //     <SearchTiles
+  //       key={movie.id}
+  //       movie={movie}
+  //       addToWatched={addToWatched}
+  //       addToUnwatched={addToUnwatched}
+  //       inWatchedList={inWatchedList}
+  //       inUnwatchedList={inUnwatchedList}
+  //       convertDate={convertDate}
+  //     />
+  //   );
+  // });
 
   const w = watched.map((item) => {
     return (
@@ -330,12 +331,12 @@ export default function App() {
       )}
 
       {/* Searchbar list */}
-      {/* {modal === 1 && (
-        <SearchModal setModal={setModal} searchData={searchData} />
-      )} */}
       {modal === 1 && (
         <SearchModal setModal={setModal} searchList={searchList} />
       )}
+      {/* {modal === 1 && (
+        <SearchModal setModal={setModal} searchList={searchList} />
+      )} */}
 
       {modal === 2 && (
         <DetailModal
