@@ -54,8 +54,6 @@ export default function App() {
               overview: item.overview,
             };
 
-            // searchItems.push(movieObj);
-
             searchItems.push(
               <SearchTiles
                 key={item.id}
@@ -82,60 +80,62 @@ export default function App() {
   const [friendsMenu, setFriendsMenu] = React.useState(false);
   const [signedIn, setSignedIn] = React.useState(false);
   // Search keyword
-  const [details, setDetails] = React.useState({
-    id: "",
-    poster: "",
-    title: "",
-    date: "",
-    overview: "",
-  });
+  const [details, setDetails] = React.useState(null);
   const [friendsTilesList, setFriendsTilesList] = React.useState([]);
 
-  // const searchList = searchList.map((movie) => {
+  const w = watched.map((movie) => {
+    return (
+      <Tiles
+        key={movie.key}
+        movie={movie}
+        setModal={setModal}
+        setDetails={setDetails}
+      />
+    );
+  });
+
+  const uw = unwatched.map((movie) => {
+    return (
+      <Tiles
+        key={movie.key}
+        movie={movie}
+        setModal={setModal}
+        setDetails={setDetails}
+      />
+    );
+  });
+
+  // const w = watched.map((item) => {
   //   return (
-  //     <SearchTiles
-  //       key={movie.id}
-  //       movie={movie}
-  //       addToWatched={addToWatched}
-  //       addToUnwatched={addToUnwatched}
-  //       inWatchedList={inWatchedList}
-  //       inUnwatchedList={inUnwatchedList}
-  //       convertDate={convertDate}
+  //     <Tiles
+  //       key={item.key}
+  //       id={item.id}
+  //       title={item.title}
+  //       poster={item.poster}
+  //       date={item.date}
+  //       overview={item.overview}
+  //       cast={item.cast}
+  //       setModal={setModal}
+  //       setDetails={setDetails}
   //     />
   //   );
   // });
 
-  const w = watched.map((item) => {
-    return (
-      <Tiles
-        key={item.key}
-        id={item.id}
-        title={item.title}
-        poster={item.poster}
-        date={item.date}
-        overview={item.overview}
-        cast={item.cast}
-        setModal={setModal}
-        setDetails={setDetails}
-      />
-    );
-  });
-
-  const uw = unwatched.map((item) => {
-    return (
-      <Tiles
-        key={item.key}
-        id={item.id}
-        title={item.title}
-        poster={item.poster}
-        date={item.date}
-        overview={item.overview}
-        cast={item.cast}
-        setModal={setModal}
-        setDetails={setDetails}
-      />
-    );
-  });
+  // const uw = unwatched.map((item) => {
+  //   return (
+  //     <Tiles
+  //       key={item.key}
+  //       id={item.id}
+  //       title={item.title}
+  //       poster={item.poster}
+  //       date={item.date}
+  //       overview={item.overview}
+  //       cast={item.cast}
+  //       setModal={setModal}
+  //       setDetails={setDetails}
+  //     />
+  //   );
+  // });
 
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
@@ -148,33 +148,47 @@ export default function App() {
   }
 
   function removeFromWatched(id) {
-    let index = 0;
-    for (let i = 0; i < watched.length; i++) {
-      if (watched[i].id === id) {
-        index = i;
-        break;
+    const newList = [];
+    watched.forEach((movie) => {
+      if (movie.id !== id) {
+        newList.push(movie);
       }
-    }
+    });
+    setWatched(newList);
+    // let index = 0;
+    // for (let i = 0; i < watched.length; i++) {
+    //   if (watched[i].id === id) {
+    //     index = i;
+    //     break;
+    //   }
+    // }
 
-    setWatched((prevWatched) => [
-      ...prevWatched.slice(0, index),
-      ...prevWatched.slice(index + 1, watched.length),
-    ]);
+    // setWatched((prevWatched) => [
+    //   ...prevWatched.slice(0, index),
+    //   ...prevWatched.slice(index + 1, watched.length),
+    // ]);
   }
 
   function removeFromUnwatched(id) {
-    let index = 0;
-    for (let i = 0; i < unwatched.length; i++) {
-      if (unwatched[i].id === id) {
-        index = i;
-        break;
+    const newList = [];
+    unwatched.forEach((movie) => {
+      if (movie.id !== id) {
+        newList.push(movie);
       }
-    }
+    });
+    setUnwatched(newList);
+    // let index = 0;
+    // for (let i = 0; i < unwatched.length; i++) {
+    //   if (unwatched[i].id === id) {
+    //     index = i;
+    //     break;
+    //   }
+    // }
 
-    setUnwatched((prevUnwatched) => [
-      ...prevUnwatched.slice(0, index),
-      ...prevUnwatched.slice(index + 1, unwatched.length),
-    ]);
+    // setUnwatched((prevUnwatched) => [
+    //   ...prevUnwatched.slice(0, index),
+    //   ...prevUnwatched.slice(index + 1, unwatched.length),
+    // ]);
   }
 
   function inWatchedList(id) {
@@ -308,6 +322,29 @@ export default function App() {
         setFriendsMenu={setFriendsMenu}
       />
 
+      {/* Searchbar list */}
+      {modal === 1 && (
+        <SearchModal setModal={setModal} searchList={searchList} />
+      )}
+
+      {modal === 2 && (
+        <DetailModal
+          details={details}
+          inUnwatchedList={inUnwatchedList}
+          addToWatched={addToWatched}
+          removeFromWatched={removeFromWatched}
+          removeFromUnwatched={removeFromUnwatched}
+          convertDate={convertDate}
+          setModal={setModal}
+        />
+      )}
+
+      {/* Movies seen */}
+      <Watched tiles={w} />
+
+      {/* Movies want to see */}
+      <Unwatched tiles={uw} />
+
       {menuOn && (
         <MenuModal
           setMenuOn={setMenuOn}
@@ -329,32 +366,6 @@ export default function App() {
           addFriend={addFriend}
         />
       )}
-
-      {/* Searchbar list */}
-      {modal === 1 && (
-        <SearchModal setModal={setModal} searchList={searchList} />
-      )}
-      {/* {modal === 1 && (
-        <SearchModal setModal={setModal} searchList={searchList} />
-      )} */}
-
-      {modal === 2 && (
-        <DetailModal
-          details={details}
-          inUnwatchedList={inUnwatchedList}
-          addToWatched={addToWatched}
-          removeFromWatched={removeFromWatched}
-          removeFromUnwatched={removeFromUnwatched}
-          convertDate={convertDate}
-          setModal={setModal}
-        />
-      )}
-
-      {/* Movies seen */}
-      <Watched tiles={w} />
-
-      {/* Movies want to see */}
-      <Unwatched tiles={uw} />
     </div>
   );
 }
