@@ -7,7 +7,7 @@ import Tiles from "./components/Tiles.js";
 import SearchModal from "./components/SearchModal.js";
 import SearchTiles from "./components/SearchTiles.js";
 import DetailModal from "./components/DetailModal.js";
-import MenuModal from "./components/MenuModal.js";
+import LoginMenu from "./components/LoginMenu.js";
 import FriendsMenu from "./components/FriendsMenu.js";
 import FriendTiles from "./components/FriendTiles.js";
 import { nanoid } from "nanoid";
@@ -17,72 +17,11 @@ export default function App() {
   const [modal, setModal] = React.useState(0);
   const [search, setSearch] = React.useState("");
   const [searchList, setSearchList] = React.useState([]);
-
-  // Get poster url configuration
-  React.useEffect(() => {
-    fetch("http://localhost:5000/api/TMDB_API/config")
-      .then((res) => res.json())
-      .then((data) => {
-        setConfigURL(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  // Get search data based on search word
-  React.useEffect(() => {
-    if (search.length > 0) {
-      fetch(`http://localhost:5000/api/TMDB_API/search/${search}`)
-        .then((result) => result.json())
-        .then((data) => {
-          const searchItems = [];
-          data.forEach((item) => {
-            if (item.overview === "") {
-              return;
-            }
-            // Get poster path url
-            const posterPath =
-              item.poster_path === null
-                ? ""
-                : "".concat(configURL, item.poster_path);
-            // Create movie object
-            const movieObj = {
-              key: item.id,
-              id: item.id,
-              poster: posterPath,
-              title: item.title,
-              date: item.release_date,
-              overview: item.overview,
-            };
-
-            searchItems.push(
-              <SearchTiles
-                key={item.id}
-                movie={movieObj}
-                addToWatched={addToWatched}
-                addToUnwatched={addToUnwatched}
-                inWatchedList={inWatchedList}
-                inUnwatchedList={inUnwatchedList}
-                convertDate={convertDate}
-              />
-            );
-          });
-          setSearchList(searchItems);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [search, modal, configURL]);
-
+  const [details, setDetails] = React.useState(null);
+  const [ready, setReady] = React.useState(false);
   // Movie lists
   const [watched, setWatched] = React.useState([]);
   const [unwatched, setUnwatched] = React.useState([]);
-  // If modal is visible
-  const [menuOn, setMenuOn] = React.useState(false);
-  const [friendsMenu, setFriendsMenu] = React.useState(false);
-  const [signedIn, setSignedIn] = React.useState(false);
-  // Search keyword
-  const [details, setDetails] = React.useState(null);
-  const [friendsTilesList, setFriendsTilesList] = React.useState([]);
-
   const w = watched.map((movie) => {
     return (
       <Tiles
@@ -105,37 +44,65 @@ export default function App() {
     );
   });
 
-  // const w = watched.map((item) => {
-  //   return (
-  //     <Tiles
-  //       key={item.key}
-  //       id={item.id}
-  //       title={item.title}
-  //       poster={item.poster}
-  //       date={item.date}
-  //       overview={item.overview}
-  //       cast={item.cast}
-  //       setModal={setModal}
-  //       setDetails={setDetails}
-  //     />
-  //   );
-  // });
+  // Get poster url configuration
+  React.useEffect(() => {
+    fetch("http://localhost:5000/api/TMDB_API/config")
+      .then((res) => res.json())
+      .then((data) => {
+        setConfigURL(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  // const uw = unwatched.map((item) => {
-  //   return (
-  //     <Tiles
-  //       key={item.key}
-  //       id={item.id}
-  //       title={item.title}
-  //       poster={item.poster}
-  //       date={item.date}
-  //       overview={item.overview}
-  //       cast={item.cast}
-  //       setModal={setModal}
-  //       setDetails={setDetails}
-  //     />
-  //   );
-  // });
+  // Get search data based on search word
+  React.useEffect(() => {
+    if (search.length > 0) {
+      setReady(false);
+      fetch(`http://localhost:5000/api/TMDB_API/search/${search}`)
+        .then((result) => result.json())
+        .then((data) => {
+          const searchItems = [];
+          data.forEach((item) => {
+            if (item.overview === "") {
+              return;
+            }
+            // Get poster path url
+            const posterPath =
+              item.hasOwnProperty("poster_path") && item.poster_path !== null
+                ? "".concat(configURL, item.poster_path)
+                : "";
+            const releaseDate =
+              item.hasOwnProperty("release_date") && item.release_date !== null
+                ? item.release_date
+                : "";
+            // Create movie object
+            const movieObj = {
+              key: item.id,
+              id: item.id,
+              poster: posterPath,
+              title: item.title,
+              date: releaseDate,
+              overview: item.overview,
+            };
+
+            searchItems.push(
+              <SearchTiles
+                key={item.id}
+                movie={movieObj}
+                addToWatched={addToWatched}
+                addToUnwatched={addToUnwatched}
+                inWatchedList={inWatchedList}
+                inUnwatchedList={inUnwatchedList}
+                convertDate={convertDate}
+              />
+            );
+          });
+          setSearchList(searchItems);
+          setReady(true);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [search, modal, configURL]);
 
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
@@ -155,18 +122,6 @@ export default function App() {
       }
     });
     setWatched(newList);
-    // let index = 0;
-    // for (let i = 0; i < watched.length; i++) {
-    //   if (watched[i].id === id) {
-    //     index = i;
-    //     break;
-    //   }
-    // }
-
-    // setWatched((prevWatched) => [
-    //   ...prevWatched.slice(0, index),
-    //   ...prevWatched.slice(index + 1, watched.length),
-    // ]);
   }
 
   function removeFromUnwatched(id) {
@@ -177,18 +132,6 @@ export default function App() {
       }
     });
     setUnwatched(newList);
-    // let index = 0;
-    // for (let i = 0; i < unwatched.length; i++) {
-    //   if (unwatched[i].id === id) {
-    //     index = i;
-    //     break;
-    //   }
-    // }
-
-    // setUnwatched((prevUnwatched) => [
-    //   ...prevUnwatched.slice(0, index),
-    //   ...prevUnwatched.slice(index + 1, unwatched.length),
-    // ]);
   }
 
   function inWatchedList(id) {
@@ -218,6 +161,9 @@ export default function App() {
   }
 
   function convertDate(date) {
+    if (date === "" || date === null) {
+      return "*No date found in API database*";
+    }
     let year = date.substring(0, 4);
     let day = date.substring(8);
     let month;
@@ -266,22 +212,13 @@ export default function App() {
       : month + " " + day + ", " + year;
   }
 
-  // WITH DATABASE:
-  // - render new page to search other profiles
-  // - add profile to list
-  // function addFriend(pp, un, wc, uc, pURL) {
-  //   let newFriend = {
-  //     profilePic: pp,
-  //     username: un,
-  //     watchedCount: wc,
-  //     unwatchedCount: uc,
-  //     profileURL: pURL
-  //   }
-  //   setFriendsTilesList(prevList => [newFriend, ...prevList]);
-  // }
+  // If modal is visible
+  const [menuOn, setMenuOn] = React.useState(false);
+  const [friendsMenu, setFriendsMenu] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState(false);
+  // Search keyword
+  const [friendsTilesList, setFriendsTilesList] = React.useState([]);
 
-  // WITHOUT DATABASE:
-  // - just add tiles with my picture
   function addFriend() {
     let id = nanoid();
     setFriendsTilesList((prevTiles) => [
@@ -312,7 +249,7 @@ export default function App() {
   }
 
   return (
-    <div>
+    <>
       {/* Navbar */}
       <Navbar
         setSearch={setSearch}
@@ -322,11 +259,17 @@ export default function App() {
         setFriendsMenu={setFriendsMenu}
       />
 
+      {/* Modal overlay */}
+      {modal !== 0 && (
+        <div className="modal-overlay" onClick={() => setModal(0)}></div>
+      )}
+
       {/* Searchbar list */}
-      {modal === 1 && (
+      {modal === 1 && ready && (
         <SearchModal setModal={setModal} searchList={searchList} />
       )}
 
+      {/* Movie details */}
       {modal === 2 && (
         <DetailModal
           details={details}
@@ -342,11 +285,11 @@ export default function App() {
       {/* Movies seen */}
       <Watched tiles={w} />
 
-      {/* Movies want to see */}
+      {/* Movies haven't seen */}
       <Unwatched tiles={uw} />
 
       {menuOn && (
-        <MenuModal
+        <LoginMenu
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
@@ -366,6 +309,6 @@ export default function App() {
           addFriend={addFriend}
         />
       )}
-    </div>
+    </>
   );
 }

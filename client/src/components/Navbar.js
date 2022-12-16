@@ -28,7 +28,7 @@ export default function Navbar({
   }
 
   return (
-    <div className="navbar">
+    <nav className="navbar">
       <form className="nav-search-container" onSubmit={searchKeyword}>
         <input className="nav-search" type="text" placeholder="Search" />
         <button className="nav-search-button" type="submit">
@@ -52,6 +52,6 @@ export default function Navbar({
           alt=""
         />
       </div>
-    </div>
+    </nav>
   );
 }

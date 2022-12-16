@@ -49,31 +49,28 @@ export default function SearchTiles({
 
   return (
     <div className="search-tiles">
-      <div className="search-tiles-poster-container">
+      <div className="st-poster-container">
         <img
-          className="search-tiles-poster"
           src={movie.poster}
           alt="Poster no longer available in API database 😭"
         />
       </div>
 
-      <div className="search-tiles-info">
-        <div className="search-tiles-header">
-          <h1 className="search-tiles-title">{movie.title}</h1>
-          <h1 className="search-tiles-date">{convertDate(movie.date)}</h1>
+      <div className="st-info">
+        <div className="st-header">
+          <h1 className="st-title">{movie.title}</h1>
+          <h1 className="st-date">{convertDate(movie.date)}</h1>
         </div>
         <h5>Starring: {thisCast}</h5>
-        <p className="search-tiles-overview">{movie.overview}</p>
+        <p className="st-overview">{movie.overview}</p>
       </div>
 
       {added ? (
-        <div>
-          <h1 className="search-tiles-watched">
-            ✔️ Added to {watched ? "Watched" : "Unwatched"} List
-          </h1>
-        </div>
+        <h1 className="st-watched">
+          ✔️ Added to {watched ? "Watched" : "Unwatched"} List
+        </h1>
       ) : (
-        <div className="search-tb-container">
+        <div className="st-button-container">
           <button className="search-tb-watched" onClick={addToWatchedList}>
             + Add to Watched List
           </button>
