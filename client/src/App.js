@@ -66,23 +66,27 @@ export default function App() {
             if (item.overview === "") {
               return;
             }
-            // Get poster path url
+            const id = item.hasOwnProperty("id") ? item.id : nanoid();
             const posterPath =
               item.hasOwnProperty("poster_path") && item.poster_path !== null
                 ? "".concat(configURL, item.poster_path)
                 : "";
+            const title = item.hasOwnProperty("title") ? item.title : "";
             const releaseDate =
               item.hasOwnProperty("release_date") && item.release_date !== null
                 ? item.release_date
                 : "";
+            const overview = item.hasOwnProperty("overview")
+              ? item.overview
+              : "";
             // Create movie object
             const movieObj = {
-              key: item.id,
-              id: item.id,
+              key: id,
+              id: id,
               poster: posterPath,
-              title: item.title,
+              title: title,
               date: releaseDate,
-              overview: item.overview,
+              overview: overview,
             };
 
             searchItems.push(
