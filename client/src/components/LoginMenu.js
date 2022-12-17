@@ -71,7 +71,15 @@ export default function LoginMenu({
               incorrect.classList.add("reveal");
             }, 100);
             setWrongCreds(2);
+          } else {
+            setMenuOn(false);
+            setWrongCreds(0);
+            setUsername(data.username);
+            setSignedIn(1);
           }
+        })
+        .catch((err) => {
+          console.error(err.message);
         });
     } else {
       incorrect.classList.remove("reveal");

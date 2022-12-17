@@ -115,6 +115,9 @@ export default function App() {
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
     setWatched((prevWatched) => [movie, ...prevWatched]);
+    // if(username !== "") {
+    //   fetch.
+    // }
   }
 
   // Add movie object to unwatched list (used in SearchTiles.js)
