@@ -21,6 +21,7 @@ app.post("/api/users", async (req, res) => {
     res.json(newLogin.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.json({ duplicate: "duplicate" });
   }
 });
 
@@ -44,6 +45,7 @@ app.get("/api/users/:username", async (req, res) => {
     res.json(user.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.json(null);
   }
 });
 

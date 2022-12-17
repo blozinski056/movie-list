@@ -30,6 +30,28 @@
     transform: scaleY(100%);
   }
 }
+@-webkit-keyframes reveal {
+  0% {
+    transform: scale(0%, 0%);
+  }
+  80% {
+    transform: scale(130%, 130%);
+  }
+  100% {
+    transform: scale(100%, 100%);
+  }
+}
+@keyframes reveal {
+  0% {
+    transform: scale(0%, 0%);
+  }
+  80% {
+    transform: scale(130%, 130%);
+  }
+  100% {
+    transform: scale(100%, 100%);
+  }
+}
 * {
   margin: 0;
   box-sizing: border-box;
@@ -488,51 +510,65 @@ button {
 /* MenuModal */
 /*************/
 .login-menu {
-  position: absolute;
+  position: fixed;
   top: calc(2vh + 65px);
   right: 3.5vw;
+  z-index: 5;
 }
 .login-menu .lm-info {
-  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   top: 70px;
+  right: 40px;
   background-color: rgb(102, 102, 102);
   width: 250px;
   border-radius: 10px;
   -webkit-animation: open 0.4s ease forwards;
           animation: open 0.4s ease forwards;
   transform-origin: 50% -20px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
   padding: 15px;
-  z-index: 4;
 }
 .login-menu .lm-info .lm-drop-down {
-  position: fixed;
-  height: 30px;
   width: 30px;
+  height: 30px;
+  position: fixed;
+  top: -12px;
+  right: 10px;
   border-radius: 5px;
   transform: rotate(45deg);
   background-color: rgb(102, 102, 102);
-  right: 10px;
-  top: -12px;
 }
 .login-menu .lm-info h1 {
+  text-align: center;
   font-size: 20px;
   cursor: default;
 }
-.login-menu .lm-info h5 {
-  color: rgb(170, 0, 0);
+.login-menu .lm-info .lm-incorrect {
+  pointer-events: none;
+  opacity: 0;
 }
-.login-menu .lm-info .lm-form {
+.login-menu .lm-info .lm-incorrect.reveal {
+  color: rgb(170, 0, 0);
+  opacity: 1;
+  -webkit-animation: reveal 0.1s ease-in forwards;
+          animation: reveal 0.1s ease-in forwards;
+}
+.login-menu .lm-info .lm-login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.login-menu .lm-info .lm-form .lm-username,
-.login-menu .lm-info .lm-form .lm-password {
+.login-menu .lm-info .lm-login-container .lm-login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.login-menu .lm-info .lm-login-container .lm-login-form .lm-login-username,
+.login-menu .lm-info .lm-login-container .lm-login-form .lm-login-password {
   border: solid 2px black;
   border-radius: 5px;
   background: rgb(65, 65, 65);
@@ -540,24 +576,73 @@ button {
   margin-top: 10px;
   padding-left: 5px;
 }
-.login-menu .lm-info .lm-form .lm-login {
-  align-self: center;
-  margin-top: 15px;
-  width: auto;
-  height: 33px;
-  align-items: center;
-  padding: 5px;
+.login-menu .lm-info .lm-login-container .lm-login-submit,
+.login-menu .lm-info .lm-login-container .lm-signup {
+  font-size: 13px;
+  margin-top: 10px;
   background-color: rgb(65, 65, 65);
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
 }
-.login-menu .lm-info .lm-form .lm-login:hover {
+.login-menu .lm-info .lm-login-container .lm-login-submit:hover,
+.login-menu .lm-info .lm-login-container .lm-signup:hover {
   transform: translate(-1px, -1px);
   box-shadow: 1px 1px 3px black;
 }
-.login-menu .lm-info .lm-form .lm-login:active {
+.login-menu .lm-info .lm-login-container .lm-login-submit:active,
+.login-menu .lm-info .lm-login-container .lm-signup:active {
   transform: translate(1px, 1px);
   box-shadow: inset 1px 1px 3px black;
+}
+.login-menu .lm-info .lm-login-container h5 {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}
+.login-menu .lm-info .lm-signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.login-menu .lm-info .lm-signup-container .lm-signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-username,
+.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-password,
+.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-password-confirm {
+  border: solid 2px black;
+  border-radius: 5px;
+  background: rgb(65, 65, 65);
+  outline: none;
+  margin-top: 10px;
+  padding-left: 5px;
+}
+.login-menu .lm-info .lm-signup-container .lm-signup-submit,
+.login-menu .lm-info .lm-signup-container .lm-login {
+  font-size: 13px;
+  margin-top: 10px;
+  background-color: rgb(65, 65, 65);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.login-menu .lm-info .lm-signup-container .lm-signup-submit:hover,
+.login-menu .lm-info .lm-signup-container .lm-login:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+.login-menu .lm-info .lm-signup-container .lm-signup-submit:active,
+.login-menu .lm-info .lm-signup-container .lm-login:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
+}
+.login-menu .lm-info .lm-signup-container h5 {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
 }
 
 /***************/

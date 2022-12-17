@@ -37,7 +37,7 @@ export default function Navbar({
       </form>
       <h1 className="nav-title">MovieTracker</h1>
       <div className="nav-search-menus">
-        {signedIn && (
+        {signedIn === 1 && (
           <img
             className="friends-menu-icon"
             src="./images/friends-icon.png"

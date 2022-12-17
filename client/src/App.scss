@@ -30,6 +30,18 @@
   }
 }
 
+@keyframes reveal {
+  0% {
+    transform: scale(0%, 0%);
+  }
+  80% {
+    transform: scale(130%, 130%);
+  }
+  100% {
+    transform: scale(100%, 100%);
+  }
+}
+
 // STYLES
 * {
   margin: 0;
@@ -489,70 +501,72 @@ button {
 /* MenuModal */
 /*************/
 .login-menu {
-  position: absolute;
+  position: fixed;
   top: calc(2vh + 65px);
   right: 3.5vw;
+  z-index: 5;
+
   .lm-info {
-    right: 40px;
+    @include flexbox($fd: column, $jc: flex-start);
     top: 70px;
+    right: 40px;
     background-color: rgb(102, 102, 102);
     width: 250px;
     border-radius: 10px;
     animation: open 0.4s ease forwards;
     transform-origin: 50% -20px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
     padding: 15px;
-    z-index: 4;
 
     .lm-drop-down {
+      @include w-h(30px, 30px);
       position: fixed;
-      height: 30px;
-      width: 30px;
+      top: -12px;
+      right: 10px;
       border-radius: 5px;
       transform: rotate(45deg);
       background-color: rgb(102, 102, 102);
-      right: 10px;
-      top: -12px;
     }
 
     h1 {
+      text-align: center;
       font-size: 20px;
       cursor: default;
     }
 
-    h5 {
-      color: rgb(170, 0, 0);
+    .lm-incorrect {
+      pointer-events: none;
+      opacity: 0;
+
+      &.reveal {
+        color: rgb(170, 0, 0);
+        opacity: 1;
+        animation: reveal 0.1s ease-in forwards;
+      }
     }
 
-    .lm-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .lm-login-container {
+      @include flexbox($fd: column);
+      .lm-login-form {
+        @include flexbox($fd: column);
 
-      .lm-username,
-      .lm-password {
-        border: solid 2px black;
-        border-radius: 5px;
-        background: rgb(65, 65, 65);
-        outline: none;
-        margin-top: 10px;
-        padding-left: 5px;
+        .lm-login-username,
+        .lm-login-password {
+          border: solid 2px black;
+          border-radius: 5px;
+          background: rgb(65, 65, 65);
+          outline: none;
+          margin-top: 10px;
+          padding-left: 5px;
+        }
       }
 
-      .lm-login {
-        align-self: center;
-        margin-top: 15px;
-        width: auto;
-        height: 33px;
-        align-items: center;
-        padding: 5px;
+      .lm-login-submit,
+      .lm-signup {
+        font-size: 13px;
+        margin-top: 10px;
         background-color: rgb(65, 65, 65);
-        cursor: pointer;
         border-radius: 5px;
+        cursor: pointer;
 
         &:hover {
           transform: translate(-1px, -1px);
@@ -563,6 +577,56 @@ button {
           transform: translate(1px, 1px);
           box-shadow: inset 1px 1px 3px black;
         }
+      }
+
+      h5 {
+        color: white;
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+
+    .lm-signup-container {
+      @include flexbox($fd: column);
+
+      .lm-signup-form {
+        @include flexbox($fd: column);
+
+        .lm-signup-username,
+        .lm-signup-password,
+        .lm-signup-password-confirm {
+          border: solid 2px black;
+          border-radius: 5px;
+          background: rgb(65, 65, 65);
+          outline: none;
+          margin-top: 10px;
+          padding-left: 5px;
+        }
+      }
+
+      .lm-signup-submit,
+      .lm-login {
+        font-size: 13px;
+        margin-top: 10px;
+        background-color: rgb(65, 65, 65);
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          transform: translate(-1px, -1px);
+          box-shadow: 1px 1px 3px black;
+        }
+
+        &:active {
+          transform: translate(1px, 1px);
+          box-shadow: inset 1px 1px 3px black;
+        }
+      }
+
+      h5 {
+        color: white;
+        text-align: center;
+        margin-top: 10px;
       }
     }
   }

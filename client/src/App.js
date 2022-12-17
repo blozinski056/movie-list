@@ -14,11 +14,15 @@ import { nanoid } from "nanoid";
 
 export default function App() {
   const [configURL, setConfigURL] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [modal, setModal] = React.useState(0);
   const [search, setSearch] = React.useState("");
   const [searchList, setSearchList] = React.useState([]);
   const [details, setDetails] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+  const [menuOn, setMenuOn] = React.useState(false);
+  const [friendsMenu, setFriendsMenu] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState(0);
   // Movie lists
   const [watched, setWatched] = React.useState([]);
   const [unwatched, setUnwatched] = React.useState([]);
@@ -217,9 +221,7 @@ export default function App() {
   }
 
   // If modal is visible
-  const [menuOn, setMenuOn] = React.useState(false);
-  const [friendsMenu, setFriendsMenu] = React.useState(false);
-  const [signedIn, setSignedIn] = React.useState(false);
+
   // Search keyword
   const [friendsTilesList, setFriendsTilesList] = React.useState([]);
 
@@ -294,6 +296,9 @@ export default function App() {
 
       {menuOn && (
         <LoginMenu
+          signedIn={signedIn}
+          setSignedIn={setSignedIn}
+          setUsername={setUsername}
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
@@ -301,8 +306,6 @@ export default function App() {
           addToWatched={addToWatched}
           inWatchedList={inWatchedList}
           inUnwatchedList={inUnwatchedList}
-          signedIn={signedIn}
-          setSignedIn={setSignedIn}
         />
       )}
 
