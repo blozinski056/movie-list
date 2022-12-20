@@ -194,14 +194,45 @@ export default function App() {
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
     setWatched((prevWatched) => [movie, ...prevWatched]);
-    // if(username !== "") {
-    //   fetch.
-    // }
+
+    if (signedIn) {
+      const body = {
+        id: movie.id,
+        poster: movie.poster,
+        title: movie.title,
+        date: movie.date,
+        overview: movie.overview,
+        moviecast: movie.cast,
+        watched: true,
+      };
+      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
+    }
   }
 
   // Add movie object to unwatched list (used in SearchTiles.js)
   function addToUnwatched(movie) {
     setUnwatched((prevUnwatched) => [movie, ...prevUnwatched]);
+
+    if (signedIn) {
+      const body = {
+        id: movie.id,
+        poster: movie.poster,
+        title: movie.title,
+        date: movie.date,
+        overview: movie.overview,
+        moviecast: movie.cast,
+        watched: false,
+      };
+      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
+    }
   }
 
   function removeFromWatched(id) {
@@ -212,6 +243,12 @@ export default function App() {
       }
     });
     setWatched(newList);
+
+    if (signedIn) {
+      fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
+        method: "DELETE",
+      }).catch((err) => console.error(err.message));
+    }
   }
 
   function removeFromUnwatched(id) {
@@ -222,6 +259,12 @@ export default function App() {
       }
     });
     setUnwatched(newList);
+
+    if (signedIn) {
+      fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
+        method: "DELETE",
+      }).catch((err) => console.error(err.message));
+    }
   }
 
   function inWatchedList(id) {
