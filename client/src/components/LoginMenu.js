@@ -206,8 +206,10 @@ export default function LoginMenu({
     <div className="login-menu">
       <div className="lm-info">
         <div className="lm-drop-down"></div>
-        <h1>{"Watched: " + getWatchedLength()}</h1>
-        <h1>{"Unwatched: " + getUnwatchedLength()}</h1>
+        <h1 className="watched-count">{"Watched: " + getWatchedLength()}</h1>
+        <h1 className="unwatched-count">
+          {"Unwatched: " + getUnwatchedLength()}
+        </h1>
         <h5 className="lm-incorrect">
           {wrongCreds === 1 && "Incorrect username/password!"}
           {wrongCreds === 2 && "Username already exists!"}
@@ -258,12 +260,12 @@ export default function LoginMenu({
                 <input
                   type="password"
                   className="change-old-pw"
-                  placeholder="Old Password"
+                  placeholder="OLD PASSWORD"
                 />
                 <input
                   type="password"
                   className="change-new-pw"
-                  placeholder="New Password"
+                  placeholder="NEW PASSWORD"
                 />
                 <button type="submit" className="change-submit">
                   Change
@@ -290,7 +292,7 @@ export default function LoginMenu({
                 <input
                   type="password"
                   className="delete-pw"
-                  placeholder="Password"
+                  placeholder="PASSWORD"
                 />
                 <button className="delete-submit">Delete</button>
               </form>

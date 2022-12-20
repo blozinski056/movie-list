@@ -1,11 +1,12 @@
 import React from "react";
 
 export default function Navbar({
+  username,
   setSearch,
   setModal,
   setMenuOn,
   signedIn,
-  setFriendsMenu,
+  // setFriendsMenu,
 }) {
   // Sends searched keyword back to App.js to use in API search and opens modal
   function searchKeyword(event) {
@@ -19,11 +20,11 @@ export default function Navbar({
 
   function openFriendsMenu() {
     setMenuOn(false);
-    setFriendsMenu((prevFriendsMenu) => !prevFriendsMenu);
+    // setFriendsMenu((prevFriendsMenu) => !prevFriendsMenu);
   }
 
   function openMenuModal() {
-    setFriendsMenu(false);
+    // setFriendsMenu(false);
     setMenuOn((prevMenuOn) => !prevMenuOn);
   }
 
@@ -38,12 +39,15 @@ export default function Navbar({
       <h1 className="nav-title">MovieTracker</h1>
       <div className="nav-search-menus">
         {signedIn === 1 && (
-          <img
-            className="friends-menu-icon"
-            src="./images/friends-icon.png"
-            onClick={openFriendsMenu}
-            alt=""
-          />
+          <div>
+            <h3>Welcome, {username}!</h3>
+            {/* <img
+              className="friends-menu-icon"
+              src="./images/friends-icon.png"
+              onClick={openFriendsMenu}
+              alt=""
+            /> */}
+          </div>
         )}
         <img
           className="nav-menu-icon"

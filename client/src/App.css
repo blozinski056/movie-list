@@ -161,6 +161,17 @@ button {
   justify-self: flex-end;
   min-width: 100px;
 }
+.navbar .nav-search-menus div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.navbar .nav-search-menus div h3 {
+  font-weight: 500;
+  margin-right: 50px;
+  cursor: default;
+}
 .navbar .nav-search-menus .friends-menu-icon {
   width: 30px;
   height: 30px;
@@ -573,6 +584,9 @@ button {
   text-align: center;
   font-size: 20px;
   cursor: default;
+}
+.login-menu .lm-info .unwatched-count {
+  margin-bottom: 10px;
 }
 .login-menu .lm-info .lm-incorrect {
   pointer-events: none;

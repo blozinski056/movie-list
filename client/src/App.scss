@@ -139,6 +139,16 @@ button {
     justify-self: flex-end;
     min-width: 100px;
 
+    div {
+      @include flexbox;
+
+      h3 {
+        font-weight: 500;
+        margin-right: 50px;
+        cursor: default;
+      }
+    }
+
     .friends-menu-icon {
       @include w-h(30px, 30px);
       margin-right: 50px;
@@ -563,6 +573,10 @@ button {
       text-align: center;
       font-size: 20px;
       cursor: default;
+    }
+
+    .unwatched-count {
+      margin-bottom: 10px;
     }
 
     .lm-incorrect {

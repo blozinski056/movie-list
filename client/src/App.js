@@ -346,46 +346,47 @@ export default function App() {
   }
 
   // Search keyword
-  const [friendsTilesList, setFriendsTilesList] = React.useState([]);
+  // const [friendsTilesList, setFriendsTilesList] = React.useState([]);
 
-  function addFriend() {
-    let id = nanoid();
-    setFriendsTilesList((prevTiles) => [
-      <FriendTiles
-        key={id}
-        id={id}
-        profilePic={"./images/profile-picture.JPG"}
-        username={"blozinski056"}
-        watchedCount={235}
-        unwatchedCount={132}
-        profileURL={""}
-        removeFriend={removeFriend}
-      />,
-      ...prevTiles,
-    ]);
-  }
+  // function addFriend() {
+  //   let id = nanoid();
+  //   setFriendsTilesList((prevTiles) => [
+  //     <FriendTiles
+  //       key={id}
+  //       id={id}
+  //       profilePic={"./images/profile-picture.JPG"}
+  //       username={"blozinski056"}
+  //       watchedCount={235}
+  //       unwatchedCount={132}
+  //       profileURL={""}
+  //       removeFriend={removeFriend}
+  //     />,
+  //     ...prevTiles,
+  //   ]);
+  // }
 
-  function removeFriend(id) {
-    let newList = [];
-    friendsTilesList.forEach((tile) => {
-      if (tile.id === id) {
-        return;
-      } else {
-        newList.push(tile);
-      }
-    });
-    setFriendsTilesList(newList);
-  }
+  // function removeFriend(id) {
+  //   let newList = [];
+  //   friendsTilesList.forEach((tile) => {
+  //     if (tile.id === id) {
+  //       return;
+  //     } else {
+  //       newList.push(tile);
+  //     }
+  //   });
+  //   setFriendsTilesList(newList);
+  // }
 
   return (
     <>
       {/* Navbar */}
       <Navbar
+        username={username}
         setSearch={setSearch}
         setModal={setModal}
         setMenuOn={setMenuOn}
         signedIn={signedIn}
-        setFriendsMenu={setFriendsMenu}
+        // setFriendsMenu={setFriendsMenu}
       />
 
       {/* Modal overlay */}
@@ -430,13 +431,13 @@ export default function App() {
         />
       )}
 
-      {friendsMenu && (
+      {/* {friendsMenu && (
         <FriendsMenu
           setFriendsMenu={setFriendsMenu}
           friendsTilesList={friendsTilesList}
           addFriend={addFriend}
         />
-      )}
+      )} */}
     </>
   );
 }
