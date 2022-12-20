@@ -116,7 +116,10 @@ export default function LoginMenu({
                 placeholder="PASSWORD"
                 required
               />
-              <input className="lm-login-submit" type="submit" value="Log In" />
+              <button className="lm-login-submit" type="submit">
+                Log In
+              </button>
+              {/* <input className="lm-login-submit" type="submit" value="Log In" /> */}
             </form>
             <h5>OR</h5>
             <button
@@ -131,7 +134,7 @@ export default function LoginMenu({
           </div>
         )}
         {signedIn === 1 && (
-          <button className="lm-logout" onClick={() => setSignedIn(0)}>
+          <button className="lm-signout" onClick={() => setSignedIn(0)}>
             Sign Out
           </button>
         )}
@@ -153,11 +156,14 @@ export default function LoginMenu({
                 className="lm-signup-password-confirm"
                 placeholder="CONFIRM PASSWORD"
               />
-              <input
+              {/* <input
                 type="submit"
                 className="lm-signup-submit"
                 value="Sign Up"
-              />
+              /> */}
+              <button type="submit" className="lm-signup-submit">
+                Sign Up
+              </button>
             </form>
             <h5>OR</h5>
             <button className="lm-login" onClick={() => setSignedIn(0)}>

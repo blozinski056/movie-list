@@ -507,7 +507,7 @@ button {
 }
 
 /*************/
-/* MenuModal */
+/* LoginMenu */
 /*************/
 .login-menu {
   position: fixed;
@@ -529,6 +529,21 @@ button {
           animation: open 0.4s ease forwards;
   transform-origin: 50% -20px 20px;
   padding: 15px;
+}
+.login-menu .lm-info button {
+  font-size: 13px;
+  margin-top: 10px;
+  background-color: rgb(65, 65, 65);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.login-menu .lm-info button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 3px black;
+}
+.login-menu .lm-info button:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 1px 1px 3px black;
 }
 .login-menu .lm-info .lm-drop-down {
   width: 30px;
@@ -576,24 +591,6 @@ button {
   margin-top: 10px;
   padding-left: 5px;
 }
-.login-menu .lm-info .lm-login-container .lm-login-submit,
-.login-menu .lm-info .lm-login-container .lm-signup {
-  font-size: 13px;
-  margin-top: 10px;
-  background-color: rgb(65, 65, 65);
-  border-radius: 5px;
-  cursor: pointer;
-}
-.login-menu .lm-info .lm-login-container .lm-login-submit:hover,
-.login-menu .lm-info .lm-login-container .lm-signup:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 1px 1px 3px black;
-}
-.login-menu .lm-info .lm-login-container .lm-login-submit:active,
-.login-menu .lm-info .lm-login-container .lm-signup:active {
-  transform: translate(1px, 1px);
-  box-shadow: inset 1px 1px 3px black;
-}
 .login-menu .lm-info .lm-login-container h5 {
   color: white;
   text-align: center;
@@ -620,24 +617,6 @@ button {
   outline: none;
   margin-top: 10px;
   padding-left: 5px;
-}
-.login-menu .lm-info .lm-signup-container .lm-signup-submit,
-.login-menu .lm-info .lm-signup-container .lm-login {
-  font-size: 13px;
-  margin-top: 10px;
-  background-color: rgb(65, 65, 65);
-  border-radius: 5px;
-  cursor: pointer;
-}
-.login-menu .lm-info .lm-signup-container .lm-signup-submit:hover,
-.login-menu .lm-info .lm-signup-container .lm-login:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 1px 1px 3px black;
-}
-.login-menu .lm-info .lm-signup-container .lm-signup-submit:active,
-.login-menu .lm-info .lm-signup-container .lm-login:active {
-  transform: translate(1px, 1px);
-  box-shadow: inset 1px 1px 3px black;
 }
 .login-menu .lm-info .lm-signup-container h5 {
   color: white;

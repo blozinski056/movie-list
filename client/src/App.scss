@@ -498,7 +498,7 @@ button {
 }
 
 /*************/
-/* MenuModal */
+/* LoginMenu */
 /*************/
 .login-menu {
   position: fixed;
@@ -516,6 +516,24 @@ button {
     animation: open 0.4s ease forwards;
     transform-origin: 50% -20px 20px;
     padding: 15px;
+
+    button {
+      font-size: 13px;
+      margin-top: 10px;
+      background-color: rgb(65, 65, 65);
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 1px 1px 3px black;
+      }
+
+      &:active {
+        transform: translate(1px, 1px);
+        box-shadow: inset 1px 1px 3px black;
+      }
+    }
 
     .lm-drop-down {
       @include w-h(30px, 30px);
@@ -560,24 +578,24 @@ button {
         }
       }
 
-      .lm-login-submit,
-      .lm-signup {
-        font-size: 13px;
-        margin-top: 10px;
-        background-color: rgb(65, 65, 65);
-        border-radius: 5px;
-        cursor: pointer;
+      // .lm-login-submit,
+      // .lm-signup {
+      //   font-size: 13px;
+      //   margin-top: 10px;
+      //   background-color: rgb(65, 65, 65);
+      //   border-radius: 5px;
+      //   cursor: pointer;
 
-        &:hover {
-          transform: translate(-1px, -1px);
-          box-shadow: 1px 1px 3px black;
-        }
+      //   &:hover {
+      //     transform: translate(-1px, -1px);
+      //     box-shadow: 1px 1px 3px black;
+      //   }
 
-        &:active {
-          transform: translate(1px, 1px);
-          box-shadow: inset 1px 1px 3px black;
-        }
-      }
+      //   &:active {
+      //     transform: translate(1px, 1px);
+      //     box-shadow: inset 1px 1px 3px black;
+      //   }
+      // }
 
       h5 {
         color: white;
@@ -585,6 +603,24 @@ button {
         margin-top: 10px;
       }
     }
+
+    // .lm-signout {
+    //   font-size: 13px;
+    //   margin-top: 10px;
+    //   background-color: rgb(65, 65, 65);
+    //   border-radius: 5px;
+    //   cursor: pointer;
+
+    //   &:hover {
+    //     transform: translate(-1px, -1px);
+    //     box-shadow: 1px 1px 3px black;
+    //   }
+
+    //   &:active {
+    //     transform: translate(1px, 1px);
+    //     box-shadow: inset 1px 1px 3px black;
+    //   }
+    // }
 
     .lm-signup-container {
       @include flexbox($fd: column);
@@ -604,24 +640,24 @@ button {
         }
       }
 
-      .lm-signup-submit,
-      .lm-login {
-        font-size: 13px;
-        margin-top: 10px;
-        background-color: rgb(65, 65, 65);
-        border-radius: 5px;
-        cursor: pointer;
+      // .lm-signup-submit,
+      // .lm-login {
+      //   font-size: 13px;
+      //   margin-top: 10px;
+      //   background-color: rgb(65, 65, 65);
+      //   border-radius: 5px;
+      //   cursor: pointer;
 
-        &:hover {
-          transform: translate(-1px, -1px);
-          box-shadow: 1px 1px 3px black;
-        }
+      //   &:hover {
+      //     transform: translate(-1px, -1px);
+      //     box-shadow: 1px 1px 3px black;
+      //   }
 
-        &:active {
-          transform: translate(1px, 1px);
-          box-shadow: inset 1px 1px 3px black;
-        }
-      }
+      //   &:active {
+      //     transform: translate(1px, 1px);
+      //     box-shadow: inset 1px 1px 3px black;
+      //   }
+      // }
 
       h5 {
         color: white;
