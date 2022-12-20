@@ -530,9 +530,19 @@ button {
   transform-origin: 50% -20px 20px;
   padding: 15px;
 }
+.login-menu .lm-info input {
+  border: solid 2px black;
+  border-radius: 5px;
+  background: rgb(65, 65, 65);
+  outline: none;
+  margin: 5px 0;
+  padding-left: 5px;
+}
 .login-menu .lm-info button {
+  width: 118px;
+  height: auto;
   font-size: 13px;
-  margin-top: 10px;
+  margin: 5px 0;
   background-color: rgb(65, 65, 65);
   border-radius: 5px;
   cursor: pointer;
@@ -544,6 +554,10 @@ button {
 .login-menu .lm-info button:active {
   transform: translate(1px, 1px);
   box-shadow: inset 1px 1px 3px black;
+}
+.login-menu .lm-info .display {
+  -webkit-animation: reveal 0.1s ease-in forwards;
+          animation: reveal 0.1s ease-in forwards;
 }
 .login-menu .lm-info .lm-drop-down {
   width: 30px;
@@ -570,6 +584,18 @@ button {
   -webkit-animation: reveal 0.1s ease-in forwards;
           animation: reveal 0.1s ease-in forwards;
 }
+.login-menu .lm-info .lm-change-incorrect,
+.login-menu .lm-info .lm-delete-incorrect {
+  pointer-events: none;
+  opacity: 0;
+}
+.login-menu .lm-info .lm-change-incorrect.reveal,
+.login-menu .lm-info .lm-delete-incorrect.reveal {
+  color: rgb(170, 0, 0);
+  opacity: 1;
+  -webkit-animation: reveal 0.1s ease-in forwards;
+          animation: reveal 0.1s ease-in forwards;
+}
 .login-menu .lm-info .lm-login-container {
   display: flex;
   flex-direction: column;
@@ -582,23 +608,29 @@ button {
   align-items: center;
   justify-content: center;
 }
-.login-menu .lm-info .lm-login-container .lm-login-form .lm-login-username,
-.login-menu .lm-info .lm-login-container .lm-login-form .lm-login-password {
-  border: solid 2px black;
-  border-radius: 5px;
-  background: rgb(65, 65, 65);
-  outline: none;
-  margin-top: 10px;
-  padding-left: 5px;
-}
 .login-menu .lm-info .lm-login-container h5 {
   color: white;
   text-align: center;
-  margin-top: 10px;
+  margin: 5px 0;
 }
 .login-menu .lm-info .lm-signout-container {
   display: grid;
   grid-template-rows: repeat(3, auto);
+  align-items: center;
+  justify-items: center;
+}
+.login-menu .lm-info .lm-signout-container .lm-change-pw-form,
+.login-menu .lm-info .lm-signout-container .lm-delete-account-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: 5px 0;
+  margin: 5px 0;
+  border-top: solid 1px black;
+  border-bottom: solid 1px black;
 }
 .login-menu .lm-info .lm-signup-container {
   display: flex;
@@ -611,16 +643,6 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-username,
-.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-password,
-.login-menu .lm-info .lm-signup-container .lm-signup-form .lm-signup-password-confirm {
-  border: solid 2px black;
-  border-radius: 5px;
-  background: rgb(65, 65, 65);
-  outline: none;
-  margin-top: 10px;
-  padding-left: 5px;
 }
 .login-menu .lm-info .lm-signup-container h5 {
   color: white;

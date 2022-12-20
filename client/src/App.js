@@ -421,15 +421,12 @@ export default function App() {
         <LoginMenu
           signedIn={signedIn}
           setSignedIn={setSignedIn}
+          username={username}
           setUsername={setUsername}
           syncMovies={syncMovies}
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
-          addToUnwatched={addToUnwatched}
-          addToWatched={addToWatched}
-          inWatchedList={inWatchedList}
-          inUnwatchedList={inUnwatchedList}
         />
       )}
 
