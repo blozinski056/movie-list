@@ -18,10 +18,10 @@ export default function Navbar({
     setMenuOn(false);
   }
 
-  function openFriendsMenu() {
-    setMenuOn(false);
-    // setFriendsMenu((prevFriendsMenu) => !prevFriendsMenu);
-  }
+  // function openFriendsMenu() {
+  //   setMenuOn(false);
+  //   setFriendsMenu((prevFriendsMenu) => !prevFriendsMenu);
+  // }
 
   function openMenuModal() {
     // setFriendsMenu(false);

@@ -5,7 +5,7 @@ export default function LoginMenu({
   setSignedIn,
   username,
   setUsername,
-  syncMovies,
+  // syncMovies,
   setMenuOn,
   getWatchedLength,
   getUnwatchedLength,
@@ -13,39 +13,60 @@ export default function LoginMenu({
   const [wrongCreds, setWrongCreds] = React.useState(0);
   const [showForms, setShowForms] = React.useState(0);
 
-  function login(e) {
+  async function login(e) {
     e.preventDefault();
 
     const incorrect = document.querySelector(".lm-incorrect");
     const un = document.querySelector(".lm-login-username").value;
     const pw = document.querySelector(".lm-login-password").value;
 
-    fetch(`http://localhost:5000/api/users/${un}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (pw === data.password) {
-          setMenuOn(false);
-          setUsername(un);
-          syncMovies(un);
-          setSignedIn(1);
-        } else {
-          incorrect.classList.remove("reveal");
-          setTimeout(() => {
-            incorrect.classList.add("reveal");
-          }, 100);
-          setWrongCreds(1);
-        }
-      })
-      .catch(() => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/${un}`);
+      const jsonData = await res.json();
+      if (pw === jsonData.password) {
+        setMenuOn(false);
+        setUsername(un);
+        setSignedIn(1);
+      } else {
         incorrect.classList.remove("reveal");
         setTimeout(() => {
           incorrect.classList.add("reveal");
         }, 100);
         setWrongCreds(1);
-      });
+      }
+    } catch (err) {
+      incorrect.classList.remove("reveal");
+      setTimeout(() => {
+        incorrect.classList.add("reveal");
+      }, 100);
+      setWrongCreds(1);
+    }
+    // fetch(`http://localhost:5000/api/users/${un}`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if (pw === data.password) {
+    //       setMenuOn(false);
+    //       setUsername(un);
+    //       syncMovies(un);
+    //       setSignedIn(1);
+    //     } else {
+    //       incorrect.classList.remove("reveal");
+    //       setTimeout(() => {
+    //         incorrect.classList.add("reveal");
+    //       }, 100);
+    //       setWrongCreds(1);
+    //     }
+    //   })
+    //   .catch(() => {
+    //     incorrect.classList.remove("reveal");
+    //     setTimeout(() => {
+    //       incorrect.classList.add("reveal");
+    //     }, 100);
+    //     setWrongCreds(1);
+    //   });
   }
 
-  function signup(e) {
+  async function signup(e) {
     e.preventDefault();
 
     const incorrect = document.querySelector(".lm-incorrect");
@@ -56,31 +77,54 @@ export default function LoginMenu({
     ).value;
 
     if (password === passwordConfirm) {
-      const body = { username: username, password: password };
-      fetch(`http://localhost:5000/api/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.duplicate === "duplicate") {
-            incorrect.classList.remove("reveal");
-            setTimeout(() => {
-              incorrect.classList.add("reveal");
-            }, 100);
-            setWrongCreds(2);
-          } else {
-            setMenuOn(false);
-            setWrongCreds(0);
-            setUsername(data.username);
-            syncMovies(data.username);
-            setSignedIn(1);
-          }
-        })
-        .catch((err) => {
-          console.error(err.message);
+      try {
+        const body = { username: username, password: password };
+        const res = await fetch(`http://localhost:5000/api/users`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
         });
+        const jsonData = await res.json();
+
+        if (jsonData.duplicate === "duplicate") {
+          incorrect.classList.remove("reveal");
+          setTimeout(() => {
+            incorrect.classList.add("reveal");
+          }, 100);
+          setWrongCreds(2);
+        } else {
+          setMenuOn(false);
+          setWrongCreds(0);
+          setUsername(jsonData.username);
+          setSignedIn(1);
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+      // fetch(`http://localhost:5000/api/users`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(body),
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     if (data.duplicate === "duplicate") {
+      //       incorrect.classList.remove("reveal");
+      //       setTimeout(() => {
+      //         incorrect.classList.add("reveal");
+      //       }, 100);
+      //       setWrongCreds(2);
+      //     } else {
+      //       setMenuOn(false);
+      //       setWrongCreds(0);
+      //       setUsername(data.username);
+      //       syncMovies(data.username);
+      //       setSignedIn(1);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.error(err.message);
+      //   });
     } else {
       incorrect.classList.remove("reveal");
       setTimeout(() => {
