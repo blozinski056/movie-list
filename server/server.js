@@ -89,10 +89,10 @@ app.delete("/api/users/:username", async (req, res) => {
 app.post("/api/users/:username/movies", async (req, res) => {
   try {
     const { username } = req.params;
-    const { movieid, watched } = req.body;
+    const { id, poster, title, date, overview, moviecast, watched } = req.body;
     const movie = await pool.query(
-      "INSERT INTO movies(movieid, username, watched) VALUES($1, $2, $3) RETURNING *",
-      [movieid, username, watched]
+      "INSERT INTO movies(id, username, poster, title, date, overview, moviecast, watched) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [id, username, poster, title, date, overview, moviecast, watched]
     );
     res.json(movie.rows[0]);
   } catch (err) {
@@ -115,12 +115,12 @@ app.get("/api/users/:username/movies", async (req, res) => {
 });
 
 // get movie
-app.get("/api/users/:username/movies/:movieid", async (req, res) => {
+app.get("/api/users/:username/movies/:id", async (req, res) => {
   try {
-    const { username, movieid } = req.params;
+    const { username, id } = req.params;
     const movie = await pool.query(
-      "SELECT * FROM movies WHERE username = $1 AND movieid = $2",
-      [username, movieid]
+      "SELECT * FROM movies WHERE username = $1 AND id = $2",
+      [username, id]
     );
     res.json(movie.rows[0]);
   } catch (err) {
@@ -129,14 +129,14 @@ app.get("/api/users/:username/movies/:movieid", async (req, res) => {
 });
 
 // delete movie
-app.delete("/api/users/:username/movies/:movieid", async (req, res) => {
+app.delete("/api/users/:username/movies/:id", async (req, res) => {
   try {
-    const { username, movieid } = req.params;
-    await pool.query(
-      "DELETE FROM movies WHERE username = $1 AND movieid = $2",
-      [username, movieid]
-    );
-    res.json(`Movie ID ${movieid} was removed!`);
+    const { username, id } = req.params;
+    await pool.query("DELETE FROM movies WHERE username = $1 AND id = $2", [
+      username,
+      id,
+    ]);
+    res.json(`Movie ID ${id} was removed!`);
   } catch (err) {
     console.error(err.message);
   }
@@ -234,14 +234,28 @@ app.get("/api/TMDB_API/search/:keyword", async (req, res) => {
 });
 
 // get movie credits
-app.get("/api/TMDB_API/credits/:movieid", async (req, res) => {
+app.get("/api/TMDB_API/credits/:id", async (req, res) => {
   try {
-    const { movieid } = req.params;
+    const { id } = req.params;
     const credits = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieid}/credits?api_key=${process.env.APIKEY}`
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.APIKEY}`
     );
     const jsonData = await credits.json();
     res.json(jsonData.cast);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get movie by id
+app.get("/api/TMDB_API/data/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.APIKEY}`
+    );
+    const jsonData = await data.json();
+    res.json(jsonData);
   } catch (err) {
     console.error(err.message);
   }

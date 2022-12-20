@@ -578,25 +578,6 @@ button {
         }
       }
 
-      // .lm-login-submit,
-      // .lm-signup {
-      //   font-size: 13px;
-      //   margin-top: 10px;
-      //   background-color: rgb(65, 65, 65);
-      //   border-radius: 5px;
-      //   cursor: pointer;
-
-      //   &:hover {
-      //     transform: translate(-1px, -1px);
-      //     box-shadow: 1px 1px 3px black;
-      //   }
-
-      //   &:active {
-      //     transform: translate(1px, 1px);
-      //     box-shadow: inset 1px 1px 3px black;
-      //   }
-      // }
-
       h5 {
         color: white;
         text-align: center;
@@ -604,23 +585,10 @@ button {
       }
     }
 
-    // .lm-signout {
-    //   font-size: 13px;
-    //   margin-top: 10px;
-    //   background-color: rgb(65, 65, 65);
-    //   border-radius: 5px;
-    //   cursor: pointer;
-
-    //   &:hover {
-    //     transform: translate(-1px, -1px);
-    //     box-shadow: 1px 1px 3px black;
-    //   }
-
-    //   &:active {
-    //     transform: translate(1px, 1px);
-    //     box-shadow: inset 1px 1px 3px black;
-    //   }
-    // }
+    .lm-signout-container {
+      display: grid;
+      grid-template-rows: repeat(3, auto);
+    }
 
     .lm-signup-container {
       @include flexbox($fd: column);
@@ -639,25 +607,6 @@ button {
           padding-left: 5px;
         }
       }
-
-      // .lm-signup-submit,
-      // .lm-login {
-      //   font-size: 13px;
-      //   margin-top: 10px;
-      //   background-color: rgb(65, 65, 65);
-      //   border-radius: 5px;
-      //   cursor: pointer;
-
-      //   &:hover {
-      //     transform: translate(-1px, -1px);
-      //     box-shadow: 1px 1px 3px black;
-      //   }
-
-      //   &:active {
-      //     transform: translate(1px, 1px);
-      //     box-shadow: inset 1px 1px 3px black;
-      //   }
-      // }
 
       h5 {
         color: white;

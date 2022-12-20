@@ -7,8 +7,13 @@ CREATE TABLE users(
 );
 
 CREATE TABLE movies(
-  movieid INT,
+  id INT,
   username VARCHAR(255),
+  poster VARCHAR(255),
+  title VARCHAR(255),
+  date VARCHAR(255),
+  overview VARCHAR,
+  moviecast VARCHAR(255),
   watched BOOLEAN,
   FOREIGN KEY (username) REFERENCES users (username)
 );

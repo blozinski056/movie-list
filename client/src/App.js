@@ -112,6 +112,85 @@ export default function App() {
     }
   }, [search, modal, configURL]);
 
+  // Sync movie list from DB with client
+  function syncMovies(username) {
+    const wLength = getWatchedLength();
+    const uwLength = getUnwatchedLength();
+
+    // DB -> client
+    fetch(`http://localhost:5000/api/users/${username}/movies`)
+      .then((res) => res.json())
+      .then((data) => {
+        const addWatched = [];
+        const addUnwatched = [];
+        if (data.length !== 0) {
+          data.forEach((movie) => {
+            if (movie.watched) {
+              addWatched.push({
+                key: movie.id,
+                id: movie.id,
+                poster: movie.poster,
+                title: movie.title,
+                date: movie.date,
+                overview: movie.overview,
+                cast: movie.moviecast,
+              });
+            } else {
+              addUnwatched.push({
+                key: movie.id,
+                id: movie.id,
+                poster: movie.poster,
+                title: movie.title,
+                date: movie.date,
+                overview: movie.overview,
+                cast: movie.moviecast,
+              });
+            }
+          });
+          setWatched((prevWatched) => [...prevWatched, ...addWatched]);
+          setUnwatched((prevUnwatched) => [...prevUnwatched, ...addUnwatched]);
+        }
+      });
+
+    // client (watched) -> DB
+    for (let i = 0; i < wLength; i++) {
+      const body = {
+        id: watched[i].id,
+        poster: watched[i].poster,
+        title: watched[i].title,
+        date: watched[i].date,
+        overview: watched[i].overview,
+        moviecast: watched[i].cast,
+        watched: true,
+      };
+
+      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
+    }
+
+    // client (unwatched) -> DB
+    for (let j = 0; j < uwLength; j++) {
+      const body = {
+        id: unwatched[j].id,
+        poster: unwatched[j].poster,
+        title: unwatched[j].title,
+        date: unwatched[j].date,
+        overview: unwatched[j].overview,
+        moviecast: unwatched[j].cast,
+        watched: false,
+      };
+
+      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
+    }
+  }
+
   // Adds movie object to watch list (used in SearchTiles.js)
   function addToWatched(movie) {
     setWatched((prevWatched) => [movie, ...prevWatched]);
@@ -223,8 +302,6 @@ export default function App() {
       : month + " " + day + ", " + year;
   }
 
-  // If modal is visible
-
   // Search keyword
   const [friendsTilesList, setFriendsTilesList] = React.useState([]);
 
@@ -302,6 +379,7 @@ export default function App() {
           signedIn={signedIn}
           setSignedIn={setSignedIn}
           setUsername={setUsername}
+          syncMovies={syncMovies}
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
