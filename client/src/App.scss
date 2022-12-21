@@ -257,6 +257,7 @@ button {
     }
 
     .st-overview {
+      @include w-h(100%, 170px);
       overflow-y: auto;
       font-weight: 300;
       padding-right: 5px;

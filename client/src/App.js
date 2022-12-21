@@ -72,12 +72,6 @@ export default function App() {
       .catch((error) => console.log(error));
   }, []);
 
-  React.useEffect(() => {
-    if (username !== "" && signedIn) {
-      syncMovies(username);
-    }
-  }, [signedIn, username]);
-
   // Get search data based on search word
   React.useEffect(() => {
     if (search.length > 0) {
@@ -127,6 +121,7 @@ export default function App() {
     const wLength = getWatchedLength();
     const uwLength = getUnwatchedLength();
 
+    // DB -> client
     try {
       const res = await fetch(
         `http://localhost:5000/api/users/${username}/movies`
@@ -135,10 +130,11 @@ export default function App() {
       const addWatched = [];
       const addUnwatched = [];
       // checks if the user has movies in their db
-      if (jsonData.length !== 0) {
-        jsonData.forEach((movie) => {
+      if ((await jsonData.length) !== 0) {
+        for await (const movie of jsonData) {
           // checks if movie was not on client already
           if (!inWatchedList(movie.id) && !inUnwatchedList(movie.id)) {
+            // if movie was not on client
             if (movie.watched) {
               addWatched.push({
                 key: movie.id,
@@ -160,8 +156,17 @@ export default function App() {
                 cast: movie.moviecast,
               });
             }
+          } else if (inWatchedList(movie.id) || inUnwatchedList(movie.id)) {
+            // remove from database
+            await fetch(
+              `http://localhost:5000/api/users/${username}/movies/${movie.id}`,
+              {
+                method: "DELETE",
+              }
+            ).catch((err) => console.error(err.message));
           }
-        });
+        }
+
         setWatched((prevWatched) => [...prevWatched, ...addWatched]);
         setUnwatched((prevUnwatched) => [...prevUnwatched, ...addUnwatched]);
       }
@@ -169,171 +174,49 @@ export default function App() {
       console.error(err.message);
     }
 
-    // DB -> client
-    // fetch(`http://localhost:5000/api/users/${username}/movies`)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     const addWatched = [];
-    //     const addUnwatched = [];
-    //     // checks if the user has movies in their db
-    //     if (data.length !== 0) {
-    //       data.forEach((movie) => {
-    //         // checks if movie was not on client already
-    //         if (!inWatchedList(movie.id) && !inUnwatchedList(movie.id)) {
-    //           if (movie.watched) {
-    //             addWatched.push({
-    //               key: movie.id,
-    //               id: movie.id,
-    //               poster: movie.poster,
-    //               title: movie.title,
-    //               date: movie.date,
-    //               overview: movie.overview,
-    //               cast: movie.moviecast,
-    //             });
-    //           } else {
-    //             addUnwatched.push({
-    //               key: movie.id,
-    //               id: movie.id,
-    //               poster: movie.poster,
-    //               title: movie.title,
-    //               date: movie.date,
-    //               overview: movie.overview,
-    //               cast: movie.moviecast,
-    //             });
-    //           }
-    //         }
-    //       });
-    //       setWatched((prevWatched) => [...prevWatched, ...addWatched]);
-    //       setUnwatched((prevUnwatched) => [...prevUnwatched, ...addUnwatched]);
-    //     }
-    //   });
-
     // client (watched) -> DB
     for (let i = 0; i < wLength; i++) {
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/users/${username}/movies/${watched[i].id}`
-        );
-        console.log(res);
-        const jsonData = await res.json();
-        console.log(jsonData);
+      // add movies from client to database
+      const body = {
+        id: watched[i].id,
+        poster: watched[i].poster,
+        title: watched[i].title,
+        date: watched[i].date,
+        overview: watched[i].overview,
+        moviecast: watched[i].cast,
+        watched: true,
+      };
 
-        if (jsonData === []) {
-          // if movie does not exist in db then add it
-          const body = {
-            id: watched[i].id,
-            poster: watched[i].poster,
-            title: watched[i].title,
-            date: watched[i].date,
-            overview: watched[i].overview,
-            moviecast: watched[i].cast,
-            watched: true,
-          };
-
-          fetch(`http://localhost:5000/api/users/${username}/movies`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          }).catch((err) => console.error(err.message));
-        }
-      } catch (err) {
-        console.error(err.message);
-      }
-
-      // fetch(
-      //   `http://localhost:5000/api/users/${username}/movies/${watched[i].id}`
-      // )
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //     // checks if movie exists in user's db
-      //     if (data === null) {
-      //       // if movie does not exist in db then add it
-      //       const body = {
-      //         id: watched[i].id,
-      //         poster: watched[i].poster,
-      //         title: watched[i].title,
-      //         date: watched[i].date,
-      //         overview: watched[i].overview,
-      //         moviecast: watched[i].cast,
-      //         watched: true,
-      //       };
-
-      //       fetch(`http://localhost:5000/api/users/${username}/movies`, {
-      //         method: "POST",
-      //         headers: { "Content-Type": "application/json" },
-      //         body: JSON.stringify(body),
-      //       }).catch((err) => console.error(err.message));
-      //     }
-      //   })
-      //   .catch((err) => console.error(err.message));
+      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
     }
 
     // client (unwatched) -> DB
     for (let j = 0; j < uwLength; j++) {
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/users/${username}/movies/${unwatched[j].id}`
-        );
-        console.log(res);
-        const jsonData = res.json();
-        console.log(jsonData);
+      // add movies from client to database
+      const body = {
+        id: unwatched[j].id,
+        poster: unwatched[j].poster,
+        title: unwatched[j].title,
+        date: unwatched[j].date,
+        overview: unwatched[j].overview,
+        moviecast: unwatched[j].cast,
+        watched: false,
+      };
 
-        if (jsonData === []) {
-          // if movie does not exist in db then add it
-          const body = {
-            id: unwatched[j].id,
-            poster: unwatched[j].poster,
-            title: unwatched[j].title,
-            date: unwatched[j].date,
-            overview: unwatched[j].overview,
-            moviecast: unwatched[j].cast,
-            watched: false,
-          };
-
-          fetch(`http://localhost:5000/api/users/${username}/movies`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          }).catch((err) => console.error(err.message));
-        }
-      } catch (err) {
-        console.error(err.message);
-      }
-
-      // fetch(
-      //   `http://localhost:5000/api/users/${username}/movies/${unwatched[j].id}`
-      // )
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-
-      //     // checks if movie exists in user's db
-      //     if (data === null) {
-      //       // if movie does not exist in db then add it
-      //       const body = {
-      //         id: unwatched[j].id,
-      //         poster: unwatched[j].poster,
-      //         title: unwatched[j].title,
-      //         date: unwatched[j].date,
-      //         overview: unwatched[j].overview,
-      //         moviecast: unwatched[j].cast,
-      //         watched: false,
-      //       };
-
-      //       fetch(`http://localhost:5000/api/users/${username}/movies`, {
-      //         method: "POST",
-      //         headers: { "Content-Type": "application/json" },
-      //         body: JSON.stringify(body),
-      //       }).catch((err) => console.error(err.message));
-      //     }
-      //   })
-      //   .catch((err) => console.error(err.message));
+      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).catch((err) => console.error(err.message));
     }
   }
 
   // Adds movie object to watch list (used in SearchTiles.js)
-  function addToWatched(movie) {
+  async function addToWatched(movie) {
     setWatched((prevWatched) => [movie, ...prevWatched]);
 
     if (signedIn) {
@@ -347,7 +230,7 @@ export default function App() {
         watched: true,
       };
 
-      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -356,7 +239,7 @@ export default function App() {
   }
 
   // Add movie object to unwatched list (used in SearchTiles.js)
-  function addToUnwatched(movie) {
+  async function addToUnwatched(movie) {
     setUnwatched((prevUnwatched) => [movie, ...prevUnwatched]);
 
     if (signedIn) {
@@ -370,7 +253,7 @@ export default function App() {
         watched: false,
       };
 
-      fetch(`http://localhost:5000/api/users/${username}/movies`, {
+      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -396,7 +279,7 @@ export default function App() {
     return false;
   }
 
-  function removeFromWatched(id) {
+  async function removeFromWatched(id) {
     const newList = [];
     watched.forEach((movie) => {
       if (movie.id !== id) {
@@ -406,13 +289,13 @@ export default function App() {
     setWatched(newList);
 
     if (signedIn) {
-      fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
+      await fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
         method: "DELETE",
       }).catch((err) => console.error(err.message));
     }
   }
 
-  function removeFromUnwatched(id) {
+  async function removeFromUnwatched(id) {
     const newList = [];
     unwatched.forEach((movie) => {
       if (movie.id !== id) {
@@ -422,7 +305,7 @@ export default function App() {
     setUnwatched(newList);
 
     if (signedIn) {
-      fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
+      await fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
         method: "DELETE",
       }).catch((err) => console.error(err.message));
     }

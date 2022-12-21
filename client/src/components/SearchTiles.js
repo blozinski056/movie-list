@@ -14,25 +14,32 @@ export default function SearchTiles({
   const [watched, setWatched] = React.useState(inWatchedList(movie.id));
   const [thisCast, setThisCast] = React.useState([]);
 
-  // Get first three members of cast list
   React.useEffect(() => {
-    fetch(`http://localhost:5000/api/TMDB_API/credits/${movie.id}`)
-      .then((result) => result.json())
-      .then((data) => {
+    const getCast = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/TMDB_API/credits/${movie.id}`
+        );
+        const jsonData = await res.json();
+
         let castList = "";
-        if (data.length > 0) {
-          castList += data[0].name;
+        if ((await jsonData.length) > 0) {
+          castList += jsonData[0].name;
           let i = 1;
-          while (data[i] != null && i < 3) {
-            castList += ", " + data[i].name;
+          while (jsonData[i] != null && i < 3) {
+            castList += ", " + jsonData[i].name;
             i++;
           }
         }
-        castList =
+        const cast =
           castList === "" ? "*No cast found in API database*" : castList;
-        setThisCast(castList);
-      })
-      .catch((error) => console.log(error));
+        setThisCast(cast);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    getCast();
   }, [movie.id]);
 
   function addToWatchedList() {
