@@ -21,7 +21,9 @@ export default function LoginMenu({
     const pw = document.querySelector(".lm-login-password").value;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${un}`);
+      const res = await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${un}`
+      );
       const jsonData = await res.json();
       if ((await jsonData.password) === pw) {
         setMenuOn(false);
@@ -57,11 +59,14 @@ export default function LoginMenu({
     if (password === passwordConfirm) {
       try {
         const body = { username: username, password: password };
-        const res = await fetch(`http://localhost:5000/api/users`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
+        const res = await fetch(
+          `https://movie-list-bloz.herokuapp.com/api/users`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
         const jsonData = await res.json();
 
         if ((await jsonData.duplicate) === "duplicate") {
@@ -97,7 +102,9 @@ export default function LoginMenu({
     const incorrect = document.querySelector(".lm-change-incorrect");
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${username}`);
+      const res = await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}`
+      );
       const jsonData = await res.json();
       if ((await jsonData.password) !== oldPW) {
         // if old password is wrong
@@ -116,11 +123,14 @@ export default function LoginMenu({
       } else {
         // if old and new passwords are different, change password
         const body = { oldPassword: oldPW, newPassword: newPW };
-        await fetch(`http://localhost:5000/api/users/${username}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        })
+        await fetch(
+          `https://movie-list-bloz.herokuapp.com/api/users/${username}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             const formElm = document.querySelector(".lm-change-pw-form");
@@ -153,16 +163,21 @@ export default function LoginMenu({
     const incorrect = document.querySelector(".lm-delete-incorrect");
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${username}`);
+      const res = await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}`
+      );
       const jsonData = await res.json();
       if ((await jsonData.password) === pw) {
         // if password is correct then delete account
         const body = { password: jsonData.password };
-        await fetch(`http://localhost:5000/api/users/${username}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        })
+        await fetch(
+          `https://movie-list-bloz.herokuapp.com/api/users/${username}`,
+          {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             // display that user was deleted

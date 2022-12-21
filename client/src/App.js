@@ -64,7 +64,7 @@ export default function App() {
 
   // Get poster url configuration
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/TMDB_API/config")
+    fetch("https://movie-list-bloz.herokuapp.com/api/TMDB_API/config")
       .then((res) => res.json())
       .then((data) => {
         setConfigURL(data);
@@ -76,7 +76,9 @@ export default function App() {
   React.useEffect(() => {
     if (search.length > 0) {
       setReady(false);
-      fetch(`http://localhost:5000/api/TMDB_API/search/${search}`)
+      fetch(
+        `https://movie-list-bloz.herokuapp.com/api/TMDB_API/search/${search}`
+      )
         .then((result) => result.json())
         .then((data) => {
           const searchItems = [];
@@ -124,7 +126,7 @@ export default function App() {
     // DB -> client
     try {
       const res = await fetch(
-        `http://localhost:5000/api/users/${username}/movies`
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies`
       );
       const jsonData = await res.json();
       const addWatched = [];
@@ -159,7 +161,7 @@ export default function App() {
           } else if (inWatchedList(movie.id) || inUnwatchedList(movie.id)) {
             // remove from database
             await fetch(
-              `http://localhost:5000/api/users/${username}/movies/${movie.id}`,
+              `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies/${movie.id}`,
               {
                 method: "DELETE",
               }
@@ -187,11 +189,14 @@ export default function App() {
         watched: true,
       };
 
-      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ).catch((err) => console.error(err.message));
     }
 
     // client (unwatched) -> DB
@@ -207,11 +212,14 @@ export default function App() {
         watched: false,
       };
 
-      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ).catch((err) => console.error(err.message));
     }
   }
 
@@ -230,11 +238,14 @@ export default function App() {
         watched: true,
       };
 
-      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ).catch((err) => console.error(err.message));
     }
   }
 
@@ -253,11 +264,14 @@ export default function App() {
         watched: false,
       };
 
-      await fetch(`http://localhost:5000/api/users/${username}/movies`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ).catch((err) => console.error(err.message));
     }
   }
 
@@ -289,9 +303,12 @@ export default function App() {
     setWatched(newList);
 
     if (signedIn) {
-      await fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
-        method: "DELETE",
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies/${id}`,
+        {
+          method: "DELETE",
+        }
+      ).catch((err) => console.error(err.message));
     }
   }
 
@@ -305,9 +322,12 @@ export default function App() {
     setUnwatched(newList);
 
     if (signedIn) {
-      await fetch(`http://localhost:5000/api/users/${username}/movies/${id}`, {
-        method: "DELETE",
-      }).catch((err) => console.error(err.message));
+      await fetch(
+        `https://movie-list-bloz.herokuapp.com/api/users/${username}/movies/${id}`,
+        {
+          method: "DELETE",
+        }
+      ).catch((err) => console.error(err.message));
     }
   }
 

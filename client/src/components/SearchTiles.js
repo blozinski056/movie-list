@@ -18,7 +18,7 @@ export default function SearchTiles({
     const getCast = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/TMDB_API/credits/${movie.id}`
+          `https://movie-list-bloz.herokuapp.com/api/TMDB_API/credits/${movie.id}`
         );
         const jsonData = await res.json();
 
