@@ -62,6 +62,42 @@ export default function App() {
     );
   });
 
+  React.useEffect(() => {
+    const wData = JSON.parse(window.localStorage.getItem("watched"));
+    const uwData = JSON.parse(window.localStorage.getItem("unwatched"));
+    const unData = JSON.parse(window.localStorage.getItem("username"));
+    const siData = JSON.parse(window.localStorage.getItem("signedIn"));
+
+    if (wData.length !== 0) {
+      setWatched(wData);
+    }
+    if (uwData.length !== 0) {
+      setUnwatched(uwData);
+    }
+    if (unData !== "null") {
+      setUsername(unData);
+    }
+    if (siData !== "null") {
+      setSignedIn(siData);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("unwatched", JSON.stringify(unwatched));
+  }, [unwatched]);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("username", JSON.stringify(username));
+  }, [username]);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("signedIn", JSON.stringify(signedIn));
+  }, [signedIn]);
+
   // Get poster url configuration
   React.useEffect(() => {
     fetch("https://movie-list-bloz.herokuapp.com/api/TMDB_API/config")
