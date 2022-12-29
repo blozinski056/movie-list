@@ -74,10 +74,10 @@ export default function App() {
     if (uwData !== null) {
       setUnwatched(uwData);
     }
-    if (unData !== "null") {
+    if (unData !== null) {
       setUsername(unData);
     }
-    if (siData !== "null") {
+    if (siData !== null) {
       setSignedIn(siData);
     }
   }, []);
