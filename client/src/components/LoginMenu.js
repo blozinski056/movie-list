@@ -9,6 +9,8 @@ export default function LoginMenu({
   setMenuOn,
   getWatchedLength,
   getUnwatchedLength,
+  setWatched,
+  setUnwatched,
 }) {
   const [wrongCreds, setWrongCreds] = React.useState(0);
   const [showForms, setShowForms] = React.useState(0);
@@ -214,6 +216,13 @@ export default function LoginMenu({
     }
   }
 
+  function signOut() {
+    window.localStorage.setItem("username", JSON.stringify(null));
+    setWatched([]);
+    setUnwatched([]);
+    setSignedIn(0);
+  }
+
   return (
     <div className="login-menu">
       <div className="lm-info">
@@ -254,7 +263,7 @@ export default function LoginMenu({
         )}
         {signedIn === 1 && (
           <div className="lm-signout-container">
-            <button className="lm-signout" onClick={() => setSignedIn(0)}>
+            <button className="lm-signout" onClick={() => signOut()}>
               Sign Out
             </button>
             {showForms !== 1 && (

@@ -96,11 +96,6 @@ export default function App() {
 
   React.useEffect(() => {
     window.localStorage.setItem("signedIn", JSON.stringify(signedIn));
-    if (signedIn === 0) {
-      window.localStorage.setItem("username", JSON.stringify(null));
-      setWatched([]);
-      setUnwatched([]);
-    }
   }, [signedIn]);
 
   // Get poster url configuration
@@ -513,6 +508,8 @@ export default function App() {
           setMenuOn={setMenuOn}
           getWatchedLength={getWatchedLength}
           getUnwatchedLength={getUnwatchedLength}
+          setWatched={setWatched}
+          setUnwatched={setUnwatched}
         />
       )}
 
