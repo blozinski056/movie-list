@@ -68,10 +68,10 @@ export default function App() {
     const unData = JSON.parse(window.localStorage.getItem("username"));
     const siData = JSON.parse(window.localStorage.getItem("signedIn"));
 
-    if (wData.length !== 0) {
+    if (wData !== null) {
       setWatched(wData);
     }
-    if (uwData.length !== 0) {
+    if (uwData !== null) {
       setUnwatched(uwData);
     }
     if (unData !== "null") {
