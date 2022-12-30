@@ -83,6 +83,15 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
+    if (modal !== 0) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    setMenuOn(false);
+  }, [modal]);
+
+  React.useEffect(() => {
     window.localStorage.setItem("watched", JSON.stringify(watched));
   }, [watched]);
 

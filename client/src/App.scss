@@ -53,6 +53,20 @@
 body {
   background-color: black;
   min-width: 800px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    margin: 20px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(190, 190, 190);
+    border-radius: 5px;
+  }
 }
 
 section {
@@ -86,7 +100,6 @@ button {
 /**********/
 .navbar {
   @include w-h(100%, 60px);
-  min-width: 800px;
   display: grid;
   align-items: center;
   justify-items: center;
@@ -165,9 +178,26 @@ button {
 /***************/
 /* SearchModal */
 /***************/
+@media (max-width: 1000px) {
+  .search-modal {
+    .modal-list {
+      @include w-h(450px, 80%);
+      padding: 10px 20px;
+    }
+  }
+}
+
+@media (min-width: 1001px) {
+  .search-modal {
+    .modal-list {
+      @include w-h(960px, 80%);
+      padding: 20px 30px;
+    }
+  }
+}
+
 .search-modal {
   .modal-list {
-    @include w-h(50vw, 80vh);
     position: fixed;
     top: calc(2vh + 50px + 30px);
     left: 3vw;
@@ -175,7 +205,6 @@ button {
     align-items: flex-start;
     background-color: rgb(102, 102, 102);
     border-radius: 20px;
-    padding: 20px 30px;
     overflow-y: scroll;
     overflow-x: hidden;
     animation: open 0.4s ease forwards;
@@ -196,11 +225,28 @@ button {
     }
   }
 
+  @media (max-width: 1000px) {
+    .modal-drop-down {
+      left: 80px;
+    }
+  }
+
+  @media (max-width: 1800px) and (min-width: 1001px) {
+    .modal-drop-down {
+      left: 8vw;
+    }
+  }
+
+  @media (min-width: 1801px) {
+    .modal-drop-down {
+      left: 7vw;
+    }
+  }
+
   .modal-drop-down {
     @include w-h(60px, 60px);
     position: fixed;
     top: calc(2vh + 50px);
-    left: 6vw;
     background-color: rgb(102, 102, 102);
     border-radius: 5px;
     animation: drop 0.4s ease forwards;
@@ -212,102 +258,214 @@ button {
 /***************/
 /* SearchTiles */
 /***************/
-.search-tiles {
-  @include w-h(100%, 230px);
-  display: grid;
-  grid-template-columns: 153px 538px 200px;
-  margin: 10px 0;
+@media (max-width: 1000px) {
+  .search-tiles {
+    width: 400px;
+    display: grid;
+    grid-template-columns: 100px 290px;
+    grid-template-rows: 150px 50px;
+    column-gap: 10px;
+    margin: 10px 0;
 
-  .st-poster-container {
-    @include w-h(100%, 100%);
+    .st-poster-container {
+      @include w-h(100%, auto);
+      grid-row-start: 1;
+      grid-column-start: 1;
 
-    img {
-      @include w-h(100%, 230px);
-      object-fit: contain;
-      border-radius: 5%;
+      img {
+        @include w-h(100%, auto);
+        object-fit: contain;
+        border-radius: 3px;
+      }
     }
-  }
 
-  .st-info {
-    @include flexbox($fd: column, $ai: flex-start, $jc: flex-start);
-    @include w-h(500px, 100%);
-    margin: 0 20px;
+    .st-info {
+      @include flexbox($fd: column, $ai: flex-start, $jc: flex-start);
+      width: 100%;
+      grid-row-start: 1;
+      grid-column-start: 2;
 
-    .st-header {
-      @include flexbox;
+      .st-header {
+        @include flexbox($fd: column, $ai: left);
 
-      .st-title {
-        font-size: 20px;
-        line-height: 1;
+        .st-title {
+          font-size: 15px;
+          line-height: 1;
+        }
+
+        .st-date {
+          font-size: 10px;
+          color: rgb(180, 180, 180);
+          min-width: 100px;
+          font-weight: 500;
+        }
       }
 
-      .st-date {
-        font-size: 15px;
-        margin-left: 20px;
-        color: rgb(180, 180, 180);
-        min-width: 120px;
+      h5 {
+        font-size: 12px;
         font-weight: 500;
-        text-align: center;
+      }
+
+      .st-overview {
+        @include w-h(100%, auto);
+        overflow-y: auto;
+        font-size: 12px;
+        font-weight: 300;
+        grid-row-start: 2;
+        grid-column: 1 / 3;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgb(190, 190, 190);
+          border-radius: 5px;
+        }
       }
     }
 
-    h5 {
-      color: rgb(197, 197, 197);
-      font-weight: 500;
+    .st-watched,
+    .st-button-container {
+      grid-row-start: 2;
+      grid-column: 1 / 3;
     }
 
-    .st-overview {
-      @include w-h(100%, 170px);
-      overflow-y: auto;
-      font-weight: 300;
-      padding-right: 5px;
+    .st-watched {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 10px;
+    }
 
-      &::-webkit-scrollbar {
-        width: 7px;
+    .st-button-container {
+      @include flexbox($jc: space-evenly);
+
+      .search-tb-watched {
+        background-color: green;
       }
 
-      &::-webkit-scrollbar-track {
-        border-radius: 5px;
+      .search-tb-unwatched {
+        background-color: red;
       }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: rgb(190, 190, 190);
-        border-radius: 5px;
+      .search-tb-watched,
+      .search-tb-unwatched {
+        @include w-h(170px, 30px);
+        margin: 10px 0;
+        cursor: pointer;
+
+        &:hover {
+          transform: translate(-1px, -1px);
+          box-shadow: 1px 1px 3px black;
+        }
+
+        &:active {
+          transform: translate(1px, 1px);
+          box-shadow: inset 1px 1px 3px black;
+        }
       }
     }
   }
+}
 
-  .st-watched {
-    width: 200px;
-    font-size: 15px;
-  }
+@media (min-width: 1001px) {
+  .search-tiles {
+    @include w-h(100%, 230px);
+    display: grid;
+    grid-template-columns: 153px 538px 200px;
+    margin: 10px 0;
 
-  .st-button-container {
-    @include flexbox($fd: column, $jc: flex-start);
-    width: 200px;
+    .st-poster-container {
+      @include w-h(100%, 100%);
 
-    .search-tb-watched {
-      background-color: green;
+      img {
+        @include w-h(100%, 230px);
+        object-fit: contain;
+        border-radius: 5%;
+      }
     }
 
-    .search-tb-unwatched {
-      background-color: red;
-    }
+    .st-info {
+      @include flexbox($fd: column, $ai: flex-start, $jc: flex-start);
+      @include w-h(500px, 100%);
+      margin: 0 20px;
 
-    .search-tb-watched,
-    .search-tb-unwatched {
-      @include w-h(200px, 30px);
-      margin: 10px 0;
-      cursor: pointer;
+      .st-header {
+        @include flexbox;
 
-      &:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 1px 1px 3px black;
+        .st-title {
+          font-size: 20px;
+          line-height: 1;
+        }
+
+        .st-date {
+          font-size: 15px;
+          margin-left: 20px;
+          color: rgb(180, 180, 180);
+          min-width: 120px;
+          font-weight: 500;
+          text-align: center;
+        }
       }
 
-      &:active {
-        transform: translate(1px, 1px);
-        box-shadow: inset 1px 1px 3px black;
+      h5 {
+        color: rgb(197, 197, 197);
+        font-weight: 500;
+      }
+
+      .st-overview {
+        @include w-h(100%, 170px);
+        overflow-y: auto;
+        font-weight: 300;
+        padding-right: 5px;
+
+        &::-webkit-scrollbar {
+          width: 7px;
+        }
+
+        &::-webkit-scrollbar-track {
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgb(190, 190, 190);
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .st-watched {
+      width: 200px;
+      font-size: 15px;
+    }
+
+    .st-button-container {
+      @include flexbox($fd: column, $jc: flex-start);
+      width: 200px;
+
+      .search-tb-watched {
+        background-color: green;
+      }
+
+      .search-tb-unwatched {
+        background-color: red;
+      }
+
+      .search-tb-watched,
+      .search-tb-unwatched {
+        @include w-h(200px, 30px);
+        margin: 10px 0;
+        cursor: pointer;
+
+        &:hover {
+          transform: translate(-1px, -1px);
+          box-shadow: 1px 1px 3px black;
+        }
+
+        &:active {
+          transform: translate(1px, 1px);
+          box-shadow: inset 1px 1px 3px black;
+        }
       }
     }
   }
@@ -428,9 +586,28 @@ button {
 /***************/
 /* DetailModal */
 /***************/
+@media (max-width: 650px) {
+  .detail-modal {
+    @include w-h(450px, 450px);
+
+    .dm-buttons {
+      bottom: 2%;
+    }
+  }
+}
+
+@media (min-width: 651px) {
+  .detail-modal {
+    @include w-h(600px, 600px);
+
+    .dm-buttons {
+      bottom: 7%;
+    }
+  }
+}
+
 .detail-modal {
   @include flexbox($fd: column, $jc: flex-start);
-  @include w-h(600px, 600px);
   position: fixed;
   left: 50%;
   top: 50%;
@@ -480,7 +657,6 @@ button {
     @include flexbox($jc: space-evenly);
     @include w-h(600px, auto);
     position: absolute;
-    bottom: 7%;
 
     .dm-move {
       background-color: green;
@@ -511,6 +687,26 @@ button {
 /*************/
 /* LoginMenu */
 /*************/
+// @media (max-width: 810px) {
+//   .login-menu {
+//     left: 530px;
+
+//     .lm-drop-down {
+//       left: 210px;
+//     }
+//   }
+// }
+
+// @media (min-width: 811px) {
+//   .login-menu {
+//     right: 3.5vw;
+
+//     .lm-drop-down {
+//       right: 10px;
+//     }
+//   }
+// }
+
 .login-menu {
   position: fixed;
   top: calc(2vh + 65px);

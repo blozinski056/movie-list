@@ -15,6 +15,10 @@ export default function LoginMenu({
   const [wrongCreds, setWrongCreds] = React.useState(0);
   const [showForms, setShowForms] = React.useState(0);
 
+  window.addEventListener("scroll", () => {
+    setMenuOn(false);
+  });
+
   async function login(e) {
     e.preventDefault();
 
